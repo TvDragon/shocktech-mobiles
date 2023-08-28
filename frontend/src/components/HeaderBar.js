@@ -31,10 +31,6 @@ function HeaderBar() {
 		setSearchTitle(e.target.value);
 	}
 
-	function searchItem() {
-		console.log(searchTitle);
-	}
-
 	return (
 		<nav>
 			<ul>
@@ -44,7 +40,7 @@ function HeaderBar() {
 				<li id="brand">ShockTech Mobiles</li>
 				<li className="searchBar">
 					<input id="searchBar" name="search" type="text" placeholder="Search..." onChange={searchTitleChange}></input>
-					<Link id="searchLink" to={"/search?searchTitle=" + searchTitle} onClick={searchItem}>
+					<Link id="searchLink" to={"/search?searchTitle=" + searchTitle}>
 						<button id="searchBtn" type="submit"><i className="fa fa-search"></i></button>
 					</Link>
 				</li>
