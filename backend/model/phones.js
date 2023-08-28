@@ -65,5 +65,7 @@ module.exports.searchTitle = async function(searchTerm) {
 		}
 	}
 
+	brands.sort();
+
 	return {phones: results, brands: brands};
 }
