@@ -1,3 +1,89 @@
 .components {
+	width: 90%;
+	margin: auto;
+	background-color: red;
+	display: flex;
+}
 
+.component-one {
+	width: 20%;
+}
+
+.component-one > * {
+	margin: auto;
+	padding: 2%;
+}
+
+.component-two {
+	width: 80%;
+	background-color: blue;
+}
+
+.component-two > * {
+	margin: auto;
+	text-align: center;
+}
+
+.filter-by-brand, .filter-by-price {
+	margin: 3%;
+	background-color: #d9d9d8;
+	border-radius: 10px;
+}
+
+#brand-filter-title, #price-filter-title {
+	font-family: 'PlayfairDisplay';
+	font-size: 22px;
+	color: #2b2c30;
+}
+
+.brandBar {
+	display: flex;
+}
+
+.brands {
+	margin: 1% 0;
+}
+
+.brand-option {
+	display: flex;
+}
+
+.brand-input {
+	margin-right: 1%;
+}
+
+.brand-name {
+	font-family: 'PublicSans';
+	font-size: 15px;
+	color:#2b2c30;
+}
+
+.filter-price {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.price-input {
+	width: 100%;
+	flex-grow: 1;
+	padding: 0 2%;
+	margin-right: 2%;
+	border-radius: 5px;
+	border: 1px #2b2c30 solid;
+	font-size: 20px;
+}
+
+#to, #go {
+	margin: auto;
+	font-family: 'PublicSans';
+}
+
+#to {
+	font-size: 15px;
+	margin-right: 2%;
+}
+
+#go {
+	font-size: 11px;
 }

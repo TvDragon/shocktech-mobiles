@@ -46,7 +46,7 @@ li.smallIcon {
 	color: #2b2c30;
 }
 
-input#searchBar {
+input#searchBar, input#brandBar {
 	border-radius: 5px;
 	border: 1px #2b2c30 solid;
 	padding: 3px;
