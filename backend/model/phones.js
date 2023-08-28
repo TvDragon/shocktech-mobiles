@@ -53,13 +53,17 @@ module.exports.searchTitle = async function(searchTerm) {
 
 	const docs = queryRes.docs;
 	const results = [];
+	const brands = [];
 
 	for (const doc of docs) {
 		const data = doc.data();
 		if (data.title.includes(searchTerm)) {
 			results.push(data);
+			if (!(brands.includes(data.brand))) {
+				brands.push(data.brand);
+			}
 		}
 	}
 
-	return results;
+	return {phones: results, brands: brands};
 }
