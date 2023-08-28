@@ -1,0 +1,47 @@
+.home-page {
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+h1.headings {
+	font-family: 'PlayfairDisplay';
+	font-size: 25;
+	text-align: center;
+}
+
+.categories {
+	/* width: 80%; */
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: auto;
+}
+
+.phone-listing {
+	background-color: #d9d9d8;
+	margin: 2% 5%;
+	border-radius: 20px;
+}
+
+.phone-listing > * {
+	margin: 5% auto;
+}
+
+.phone-img {
+	width: 204px;
+	height: 200px;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.title, .price {
+	text-align: center;
+	font-family: 'Public Sans';
+	overflow-wrap: break-word;
+	font-size: 15px;
+	color: #2b2c30;
+}

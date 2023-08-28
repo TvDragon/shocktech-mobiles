@@ -1,0 +1,113 @@
+nav {
+	width: 100%;
+	margin: auto;
+	margin-top: 1%;
+}
+
+ul {
+	display: flex;
+	align-items: center;
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+li.searchBar {
+	display: flex;
+	flex-grow: 1;
+	margin: auto 50px;
+}
+
+li > .icon {
+	background-color: #f6c5af;
+	border-radius: 10px;
+	display: inline-block;
+	padding: 5px;
+	margin: 0 5px;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+li.smallIcon {
+  display: none;
+	position: relative;
+}
+
+.icon > img {
+	width: 32px;
+	height: 32px;
+}
+
+#brand {
+	font-family: 'PlayfairDisplay Bold';
+	font-size: 38px;
+	color: #2b2c30;
+}
+
+input#searchBar {
+	border-radius: 5px;
+	border: 1px #2b2c30 solid;
+	padding: 3px;
+	font-size: 20px;
+	font-family: 'PublicSans';
+	width: 100%;
+	margin-right: 1%;
+}
+
+button#searchBtn {
+	padding: 5px;
+}
+
+@media only screen and (max-width: 1000px) {
+	#brand {
+		font-size: 20px;
+	}
+
+	#logo {
+		height: 25px;
+		width: 13px;
+	}
+
+	.icon > img {
+		width: 16px;
+		height: 16px;
+	}
+
+	li > .icon {
+		border-radius: 5px;
+		padding: 3px;
+	}
+
+	input#searchBar {
+		font-size: 15px;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+	#brand {
+		font-size: 13px;
+	}
+
+	.icon > img {
+		width: 8px;
+		height: 8px;
+	}
+
+	li.smallIcon {
+		display: block;
+	}
+
+	input#searchBar {
+		font-size: 13px;
+	}
+	
+	.dropdown-icons {
+		position: absolute;
+		top: 100%; /* Position it at the bottom of smallIcon */
+		right: 0;  /* Align it to the right edge */
+		display: flex;
+		flex-direction: column;
+	}
+}
