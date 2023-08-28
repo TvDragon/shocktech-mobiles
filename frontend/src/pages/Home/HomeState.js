@@ -29,7 +29,7 @@ function HomeState() {
 	}, []);
 
 	return (
-		<div className="content">
+		<div className="content fill-page">
 			<HeaderBar />
 			<div className="home-page">
 				<div className="contents">

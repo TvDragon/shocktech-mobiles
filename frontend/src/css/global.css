@@ -40,6 +40,9 @@ html{
 .content {
 	width: 90%;
 	margin: 0 auto;
+}
+
+.fill-page {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
