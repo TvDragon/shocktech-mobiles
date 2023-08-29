@@ -17,10 +17,12 @@
 .component-two {
 	width: 80%;
 	background-color: blue;
+	display: flex;
+	flex-direction: column;
 }
 
 .component-two > * {
-	margin: auto;
+	/* margin: auto; */
 	text-align: center;
 }
 
@@ -86,4 +88,26 @@
 
 #go {
 	font-size: 11px;
+}
+
+.component-two-header {
+	display: flex;
+	justify-content: flex-end;  /* Pushes .sort-by to the right */
+	margin: 1%;
+}
+
+.sort-by-component {
+	background-color: #d9d9d8;
+	border-radius: 10px;
+	padding: 1%;
+}
+
+.sort-by-text {
+	font-family: 'PublicfairDisplay';
+	font-size: 22px;
+}
+
+option {
+	font-family: 'PublicSans';
+	font-size: 15px;
 }
