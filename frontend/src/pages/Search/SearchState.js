@@ -21,7 +21,8 @@ function SearchState() {
 		axios
 			.get("/api/search", {
 				params: {
-					searchTitle: searchTitle
+					searchTitle: searchTitle,
+					
 				}
 			})
 			.then((res) => {
