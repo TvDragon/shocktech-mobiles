@@ -57,7 +57,8 @@ module.exports.searchTitle = async function(searchTerm) {
 
 	for (const doc of docs) {
 		const data = doc.data();
-		if (data.title.includes(searchTerm)) {
+		var title = data.title.toLowerCase();
+		if (title.includes(searchTerm)) {
 			results.push(data);
 			if (!(brands.includes(data.brand))) {
 				brands.push(data.brand);

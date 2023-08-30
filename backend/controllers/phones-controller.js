@@ -21,7 +21,7 @@ module.exports.getBestSellers = async function(req, res) {
 module.exports.searchTitle = async function(req, res) {
 
   if (req.query.searchTitle) {
-    var title = req.query.searchTitle;
+    var title = req.query.searchTitle.toLowerCase();
     var results = await phones.searchTitle(title);
     if (results.length == 0) {
       return res.json({error: "Cannot find phone for search title"});
