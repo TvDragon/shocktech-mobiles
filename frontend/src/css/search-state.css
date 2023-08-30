@@ -1,7 +1,7 @@
 .components {
 	width: 90%;
 	margin: auto;
-	background-color: red;
+	/* background-color: red; */
 	display: flex;
 }
 
@@ -11,12 +11,12 @@
 
 .component-one > * {
 	margin: auto;
-	padding: 2%;
+	padding: 5%;
 }
 
 .component-two {
 	width: 80%;
-	background-color: blue;
+	/* background-color: blue; */
 	display: flex;
 	flex-direction: column;
 }
@@ -29,7 +29,7 @@
 .filter-by-brand, .filter-by-price {
 	margin: 3%;
 	background-color: #d9d9d8;
-	border-radius: 10px;
+	border-radius: 20px;
 }
 
 #brand-filter-title, #price-filter-title {
@@ -98,7 +98,7 @@
 
 .sort-by-component {
 	background-color: #d9d9d8;
-	border-radius: 10px;
+	border-radius: 20px;
 	padding: 1%;
 }
 
@@ -107,7 +107,8 @@
 	font-size: 22px;
 }
 
-option {
-	font-family: 'PublicSans';
-	font-size: 15px;
+select {
+	background-color: #d9d9d8;
+	border: 1px #2b2c30 solid;
+	border-radius: 5px;
 }

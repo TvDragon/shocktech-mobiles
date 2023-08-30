@@ -5,6 +5,7 @@ import HeaderBar from "../../components/HeaderBar";
 import "../../css/global.css";
 import "../../css/search-state.css";
 import SearchResults from "./SearchResults";
+import DisplayPhones from "../Home/DisplayPhones";
 
 function SearchState() {
   const location = useLocation();
@@ -86,7 +87,7 @@ function SearchState() {
 						</div>
 					</div>
 					<div className="phones">
-						<p>phones</p>
+						<DisplayPhones phones={results}/>
 					</div>
 				</div>
 			</div>
