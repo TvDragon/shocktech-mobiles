@@ -119,7 +119,33 @@ PhoneSchema.statics.getPhone = async function(uid) {
   return await this.aggregate([
     {$match: {$and: [
       {uid: uid}
-    ]}}
+    ]}},
+    {$unwind: {
+      path: "$reviews",
+      preserveNullAndEmptyArrays: true  // Unwind null and empty values(array)
+    }},
+    {$addFields: {
+      "reviews.reviewerObj": {
+        $toObjectId: "$reviews.reviewer", // Create new field named "reviews.reviewerOBj" containing "reviews.reviewer" as ObjectId
+      }
+    }},
+    {$lookup: {
+      from: "Users",
+      localField: "reviews.reviewerObj",
+      foreignField: "_id",
+      as: "reviews.reviewerObj"
+    }},
+    {$group: {
+      _id: "$_id",
+      title: { $first: "$title" },  // Take the first value of field
+      brand: { $first: "$brand" },
+      image: { $first: "$image" },
+      stock: { $first: "$stock" },
+      price: { $first: "$price"},
+      disabled: { $first: "$disabled"},
+      uid: { $first: "$uid"},
+      reviews: { $push: "$reviews" } // Push all reviews back into an array
+    }}
   ])
 }
 

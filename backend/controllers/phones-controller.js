@@ -36,7 +36,7 @@ module.exports.getPhone = async function(req, res) {
     if (results.length == 0) {
       return res.json({error: "Cannot get product information."});
     }
-    return res.json(results);
+    return res.json(results[0]);
   }
   return res.json({error: "No query for uid."});
 }
