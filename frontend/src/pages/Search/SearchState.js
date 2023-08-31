@@ -114,17 +114,6 @@ function SearchState() {
           </div>
         </div>
         <div className="component-two">
-          <div className="component-two-header">
-            <div className="sort-by-component">
-              <p className="sort-by-text">Sort By</p>
-              <select name="options" id="sort-by">
-                <option value="Relevancy">Relevancy</option>
-                <option value="Price: Low - High">Price: Low - High</option>
-                <option value="Price: High - Low">Price: High - Low</option>
-                <option value="Popularity">Popularity</option>
-              </select>
-            </div>
-          </div>
           <div className="phones">
             <DisplayPhones phones={showResults}/>
           </div>
