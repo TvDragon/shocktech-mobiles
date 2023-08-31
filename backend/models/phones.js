@@ -73,7 +73,13 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands) {
         {title: {$regex: searchTitle, $options: 'i'}},
         {disabled: false},
         {stock: {$gt: 0}}
-      ]}}
+      ]}},
+      {$group: {
+        _id: null,
+        phones: {$push: "$$ROOT"},
+        minPrice: {$min: "$price"},
+        maxPrice: {$max: "$price"},
+      }}
     ])
   } else {
     if (typeof brands === 'string') {
@@ -85,7 +91,13 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands) {
         {brand: {$in: brands}},
         {disabled: false},
         {stock: {$gt: 0}}
-      ]}}
+      ]}},
+      {$group: {
+        _id: null,
+        phones: {$push: "$$ROOT"},
+        minPrice: {$min: "$price"},
+        maxPrice: {$max: "$price"},
+      }}
     ])
   }
 
@@ -98,8 +110,9 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands) {
   if (!(results.length)) {
     return [];
   }
-
-  return {phones: results, brands: brands};
+  
+  return {phones: results[0]["phones"], brands: brands,
+          minPrice: results[0]["minprice"], maxPrice: results[0]["maxPrice"]};
 }
 
 // Create model for Phones
