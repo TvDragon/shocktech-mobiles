@@ -115,6 +115,14 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands) {
           minPrice: results[0]["minprice"], maxPrice: results[0]["maxPrice"]};
 }
 
+PhoneSchema.statics.getPhone = async function(uid) {
+  return await this.aggregate([
+    {$match: {$and: [
+      {uid: uid}
+    ]}}
+  ])
+}
+
 // Create model for Phones
 const Phone = mongoose.model('Phone', PhoneSchema, "Phones");
 

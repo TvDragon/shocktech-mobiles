@@ -28,3 +28,15 @@ module.exports.searchTitle = async function(req, res) {
   }
   return res.json({error: "No query for search title."});
 }
+
+module.exports.getPhone = async function(req, res) {
+  if (req.query.uid) {
+    const uid = Number(req.query.uid);
+    var results = await Phone.getPhone(uid);
+    if (results.length == 0) {
+      return res.json({error: "Cannot get product information."});
+    }
+    return res.json(results);
+  }
+  return res.json({error: "No query for uid."});
+}

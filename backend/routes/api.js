@@ -9,4 +9,6 @@ router.get("/sold-out-soon", phonesController.getSoldOutSoon);
 
 router.get('/search', phonesController.searchTitle);
 
+router.get('/product', phonesController.getPhone);
+
 module.exports = router;
