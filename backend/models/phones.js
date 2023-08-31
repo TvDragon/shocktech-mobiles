@@ -65,25 +65,37 @@ PhoneSchema.statics.getSoldOutSoon = function() {
   ]);
 }
 
-PhoneSchema.statics.searchTitle = async function(searchTitle) {
-  var results = await this.aggregate([
-    {$match: {$and: [
-      {title: {$regex: searchTitle, $options: 'i'}},
-      {disabled: false},
-      {stock: {$gt: 0}}
-    ]}}
-  ])
-
-  var brands = [];
-  const resultsLen = results.length;
-  for (var i = 0; i < resultsLen; i++) {
-    const phone = results[i];
-    if (!(brands.includes(phone.brand))) {
-      brands.push(phone.brand);
+PhoneSchema.statics.searchTitle = async function(searchTitle, brands) {
+  var results = null;
+  if (brands == undefined) { 
+    results = await this.aggregate([
+      {$match: {$and: [
+        {title: {$regex: searchTitle, $options: 'i'}},
+        {disabled: false},
+        {stock: {$gt: 0}}
+      ]}}
+    ])
+  } else {
+    if (typeof brands === 'string') {
+      brands = [brands];
     }
+    results = await this.aggregate([
+      {$match: {$and: [
+        {title: {$regex: searchTitle, $options: 'i'}},
+        {brand: {$in: brands}},
+        {disabled: false},
+        {stock: {$gt: 0}}
+      ]}}
+    ])
   }
 
-  if (!resultsLen) {
+  var brands = await this.distinct('brand');
+  const brandsLen = brands.length;
+  for (var i = 0; i < brandsLen; i++) {
+    brands[i] = [brands[i], false];
+  }
+  
+  if (!(results.length)) {
     return [];
   }
 

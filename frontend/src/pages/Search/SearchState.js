@@ -4,16 +4,16 @@ import axios from "axios";
 import HeaderBar from "../../components/HeaderBar";
 import "../../css/global.css";
 import "../../css/search-state.css";
-import SearchResults from "./SearchResults";
 import DisplayPhones from "../Home/DisplayPhones";
+import DisplayBrands from "./DisplayBrands";
 
 function SearchState() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchTitle = queryParams.get('searchTitle');
   const [results, setResults] = useState([]);
-  const [brandName, setBrandName] = useState("");
   const [brandNames, setBrandNames] = useState([]);
+  const [displayBrandNames, setDisplayBrandsNames] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(2000);
 
@@ -22,12 +22,12 @@ function SearchState() {
       .get("/api/search", {
         params: {
           searchTitle: searchTitle,
-          
         }
       })
       .then((res) => {
         setResults(res.data.phones);
         setBrandNames(res.data.brands);
+        setDisplayBrandsNames(res.data.brands);
       })
       .catch((err) => console.log(err));
   }, [searchTitle]);
@@ -36,12 +36,36 @@ function SearchState() {
 
   }
 
-  function filterBrand() {
-
+  function updateSelectedBrands(selectedBrands) {
+    var route = `/api/search?searchTitle=${searchTitle}`;
+    for (var i = 0; i < selectedBrands.length; i++) {
+      route += `&brand=${selectedBrands[i]}`;
+    }
+    axios
+      .get(route)
+      .then((res) => {
+        setResults(res.data.phones);
+        setBrandNames(res.data.brands);
+      })
+      .catch((err) => console.log(err));
   }
   
   const brandNameChange = (e) => {
-    setBrandName(e.target.value);
+    var brand = e.target.value;
+    if (brand === '') {
+      setDisplayBrandsNames(brandNames);
+    } else {
+      brand = brand.toLowerCase();
+      var brandsLen = brandNames.length;
+      var brandLen = brand.length;
+      const showBrands = [];
+      for (var i = 0; i < brandsLen; i++) {
+        if (brandNames[i][0].substring(0, brandLen).toLowerCase() === brand) {
+          showBrands.push(brandNames[i]);
+        }
+      }
+      setDisplayBrandsNames(showBrands);
+    }
   }
 
   const minPriceChange = (e) => {
@@ -61,9 +85,8 @@ function SearchState() {
             <p id="brand-filter-title">Brand</p>
             <div className="brandBar">
               <input id="brandBar" name="search" type="text" placeholder="Search..." onChange={brandNameChange}></input>
-              <button id="searchBtn" type="submit" onClick={filterBrand}><i className="fa fa-search"></i></button>
             </div>
-            <SearchResults results={brandNames}/>
+            <DisplayBrands brands={displayBrandNames} searchTitle={searchTitle} updateSelectedBrands={updateSelectedBrands}/>
           </div>
           <div className="filter-by-price">
             <p id="price-filter-title">Price</p>
