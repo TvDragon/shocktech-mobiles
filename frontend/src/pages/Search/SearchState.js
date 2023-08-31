@@ -14,6 +14,7 @@ function SearchState() {
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState([]);
   const [brandNames, setBrandNames] = useState([]);
+  const [tickedBrands, setTickedBrands] = useState([]);
   const [displayBrandNames, setDisplayBrandsNames] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
@@ -30,8 +31,6 @@ function SearchState() {
         setShowResults(res.data.phones);
         setBrandNames(res.data.brands);
         setDisplayBrandsNames(res.data.brands);
-        setMinPrice(res.data.minPrice !== null &&
-                    res.data.minPrice !== undefined ? res.data.minPrice : 0);
         setMaxPrice(res.data.maxPrice !== null &&
                     res.data.maxPrice !== undefined ? res.data.maxPrice : 0);
       })
@@ -43,15 +42,25 @@ function SearchState() {
     const displayResults = [];
     setMinPrice(Number(minPrice));
     setMaxPrice(Number(maxPrice));
+    const selectedBrandsLen = tickedBrands.length;
     for (var i = 0; i < resultsLen; i++) {
       if (results[i].price <= maxPrice && results[i].price >= minPrice) {
-        displayResults.push(results[i]);
+        if (selectedBrandsLen != 0) {
+          for (var j = 0; j < selectedBrandsLen; j++) {
+            if (results[i].brand === tickedBrands[j]) {
+              displayResults.push(results[i]);
+            }
+          }
+        } else {
+          displayResults.push(results[i]);
+        }
       }
     }
     setShowResults(displayResults);
   }
 
   function updateSelectedBrands(selectedBrands) {
+    setTickedBrands(selectedBrands);
     var route = `/api/search?searchTitle=${searchTitle}`;
     for (var i = 0; i < selectedBrands.length; i++) {
       route += `&brand=${selectedBrands[i]}`;
@@ -59,8 +68,10 @@ function SearchState() {
     axios
       .get(route)
       .then((res) => {
-        setResults(res.data.phones);
+        setShowResults(res.data.phones);
         setBrandNames(res.data.brands);
+        setMinPrice(0);
+        setMaxPrice(res.data.maxPrice);
       })
       .catch((err) => console.log(err));
   }
