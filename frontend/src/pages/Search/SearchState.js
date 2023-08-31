@@ -12,10 +12,11 @@ function SearchState() {
   const queryParams = new URLSearchParams(location.search);
   const searchTitle = queryParams.get('searchTitle');
   const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState([]);
   const [brandNames, setBrandNames] = useState([]);
   const [displayBrandNames, setDisplayBrandsNames] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(2000);
+  const [maxPrice, setMaxPrice] = useState(0);
 
   useEffect(() => {
     axios
@@ -26,14 +27,28 @@ function SearchState() {
       })
       .then((res) => {
         setResults(res.data.phones);
+        setShowResults(res.data.phones);
         setBrandNames(res.data.brands);
         setDisplayBrandsNames(res.data.brands);
+        setMinPrice(res.data.minPrice !== null &&
+                    res.data.minPrice !== undefined ? res.data.minPrice : 0);
+        setMaxPrice(res.data.maxPrice !== null &&
+                    res.data.maxPrice !== undefined ? res.data.maxPrice : 0);
       })
       .catch((err) => console.log(err));
   }, [searchTitle]);
 
   function setPriceLimit() {
-
+    const resultsLen = results.length;
+    const displayResults = [];
+    setMinPrice(Number(minPrice));
+    setMaxPrice(Number(maxPrice));
+    for (var i = 0; i < resultsLen; i++) {
+      if (results[i].price <= maxPrice && results[i].price >= minPrice) {
+        displayResults.push(results[i]);
+      }
+    }
+    setShowResults(displayResults);
   }
 
   function updateSelectedBrands(selectedBrands) {
@@ -111,7 +126,7 @@ function SearchState() {
             </div>
           </div>
           <div className="phones">
-            <DisplayPhones phones={results}/>
+            <DisplayPhones phones={showResults}/>
           </div>
         </div>
       </div>
