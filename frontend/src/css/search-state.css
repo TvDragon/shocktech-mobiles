@@ -1,3 +1,7 @@
+.filter-small {
+	display: none;
+}
+
 .components {
 	width: 90%;
 	margin: auto;
@@ -7,6 +11,28 @@
 
 .component-one {
 	width: 20%;
+}
+
+@media only screen and (max-width: 1250px) {
+	.component-one {
+		display: none;
+	}
+
+	.component-two {
+		margin: auto;
+	}
+
+	.filter-small {
+		display: flex;
+	}
+
+	.filter-small > * {
+		margin: auto;
+	}
+
+	.filter-by-brand {
+		padding: 5%;
+	}
 }
 
 .component-one > * {

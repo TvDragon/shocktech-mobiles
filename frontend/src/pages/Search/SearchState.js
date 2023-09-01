@@ -18,6 +18,8 @@ function SearchState() {
   const [displayBrandNames, setDisplayBrandsNames] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
+  const [isBrandDropdownVisible, setIsBrandDropdownVisible] = useState(false);
+  const [isPriceDropdownVisible, setIsPriceDropdownVisible] = useState(false);
 
   useEffect(() => {
     axios
@@ -45,7 +47,7 @@ function SearchState() {
     const selectedBrandsLen = tickedBrands.length;
     for (var i = 0; i < resultsLen; i++) {
       if (results[i].price <= maxPrice && results[i].price >= minPrice) {
-        if (selectedBrandsLen != 0) {
+        if (selectedBrandsLen !== 0) {
           for (var j = 0; j < selectedBrandsLen; j++) {
             if (results[i].brand === tickedBrands[j]) {
               displayResults.push(results[i]);
@@ -101,10 +103,42 @@ function SearchState() {
   const maxPriceChange = (e) => {
     setMaxPrice(e.target.value);
   }
+
+  const toggleBrandDropdown = () => {
+    setIsBrandDropdownVisible(!isBrandDropdownVisible);
+  }
+  
+  const togglePriceDropdown = () => {
+    setIsPriceDropdownVisible(!isPriceDropdownVisible);
+  }
   
   return (
     <div className="content">
       <HeaderBar />
+      <div className="filter-small">
+        <div className="brand-filter">
+          <button onClick={toggleBrandDropdown}>Brand {isBrandDropdownVisible ? "↑" : "↓"}</button>
+          {isBrandDropdownVisible ? 
+            <div className="filter-by-brand">
+              <div className="brandBar">
+                <input id="brandBar" name="search" type="text" placeholder="Search..." onChange={brandNameChange}></input>
+              </div>
+              <DisplayBrands brands={displayBrandNames} searchTitle={searchTitle} updateSelectedBrands={updateSelectedBrands}/>
+            </div> : <div></div>
+          }
+        </div>
+        <div className="price-filter">
+          <button onClick={togglePriceDropdown}>Price {isPriceDropdownVisible ? "↑" : "↓"}</button>
+          {isPriceDropdownVisible ?
+            <div className="filter-price">
+              <input className="price-input" value={minPrice} onChange={minPriceChange}></input>
+              <p id="to">To</p>
+              <input className="price-input" value={maxPrice} onChange={maxPriceChange}></input>
+              <button id="searchBtn" type="submit" onClick={setPriceLimit}><p id="go">GO</p></button>
+            </div> : <div></div>
+          }
+        </div>
+      </div>
       <div className="components">
         <div className="component-one">
           <div className="filter-by-brand">
