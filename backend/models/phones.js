@@ -144,6 +144,8 @@ PhoneSchema.statics.getPhone = async function(uid) {
       price: { $first: "$price"},
       disabled: { $first: "$disabled"},
       uid: { $first: "$uid"},
+      avgRatings: { $first: "$avgRatings"},
+      numReviews: { $first: "$numReviews"},
       reviews: { $push: "$reviews" } // Push all reviews back into an array
     }}
   ])
