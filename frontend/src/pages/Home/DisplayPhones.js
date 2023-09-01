@@ -5,8 +5,7 @@ import ShoppingCartIcon from "../../assets/shopping-cart.png";
 
 function DisplayPhones({ phones }) {
 
-  function addToCart(event, phoneUID) {
-    // event.stopPropagation();
+  function addToCart(phoneUID) {
     console.log(phoneUID);
   }
 
@@ -25,8 +24,7 @@ function DisplayPhones({ phones }) {
                     <Link to={"/product?uid=" + phone.uid} className='phone-link-style'>
                       <p className='price'>${phone.price}</p>
                     </Link>
-                    {/* <button className="quick-cart-btn" onClick={(event) => addToCart(event, phone.uid)}></button> */}
-                    <img className='quick-cart-img' src={ShoppingCartIcon} alt={ShoppingCartIcon} onClick={(event) => addToCart(event, phone.uid)}/>
+                    <img className='quick-cart-img' src={ShoppingCartIcon} alt={ShoppingCartIcon} onClick={(event) => addToCart(phone.uid)}/>
                   </div>
                 </div>
             </div>
