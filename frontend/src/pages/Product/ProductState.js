@@ -11,8 +11,10 @@ function ProductState() {
   const queryParams = new URLSearchParams(location.search);
   const uid = queryParams.get('uid');
   const [phone, setPhone] = useState([]);
+  const [quantity, setQuantity] = useState(0);
   
   useEffect(() => {
+    setQuantity(1);
     if (uid) {
       axios
         .get("/api/product", {
@@ -29,6 +31,24 @@ function ProductState() {
     }
   }, [uid]);
 
+  function minusQty() {
+    if (quantity > 0) {
+      setQuantity(quantity - 1);
+    }
+  }
+  
+  function addQty() {
+    if (quantity < phone.stock) {
+      setQuantity(quantity + 1);
+    }
+  }
+
+  const changeQuantity = (e) => {
+    if (e.target.value <= phone.stock) {
+      setQuantity(e.target.value);
+    }
+  }
+
   return (
     <div className="content">
       <HeaderBar />
@@ -42,9 +62,16 @@ function ProductState() {
             <p id="item-number">Item Number: {phone.uid}</p>
             {typeof phone.avgRatings === "number" && <StarRating rating={phone.avgRatings} numReviews={phone.numReviews}/>}
             <p id="price">${phone.price}</p>
+            <div className="quantity-add-to-cart">
+              <button className="minus-quantity text-color" onClick={minusQty}>−</button>
+              <input className="qty-input text-color" value={quantity} onChange={changeQuantity}></input>
+              <button className="add-quantity text-color" onClick={addQty}>+</button>
+              <button className="add-to-cart-btn text-color">Add To Cart</button>
+            </div>
           </div>
         </div>
         <div id="reviews">
+          <p className="reviews-title">Reviews</p>
         </div>
       </div>
     </div>
