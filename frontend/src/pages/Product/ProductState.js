@@ -4,6 +4,7 @@ import axios from "axios";
 import "../../css/global.css";
 import "../../css/product-state.css";
 import HeaderBar from "../../components/HeaderBar";
+import StarRating from "./StarRatings";
 
 function ProductState() {
   const location = useLocation();
@@ -12,16 +13,20 @@ function ProductState() {
   const [phone, setPhone] = useState([]);
   
   useEffect(() => {
-    axios
-      .get("/api/product", {
-        params: {
-          uid: uid
-        }
-      })
-      .then((res) => {
-        setPhone(res.data);
-      })
-      .catch((err) => console.log(err));
+    if (uid) {
+      axios
+        .get("/api/product", {
+          params: {
+            uid: uid
+          }
+        })
+        .then((res) => {
+          setPhone(res.data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log("uid not available");
+    }
   }, [uid]);
 
   return (
@@ -35,6 +40,8 @@ function ProductState() {
           <div id="product-desc">
             <p id="title" className="text-color">{phone.title}</p>
             <p id="item-number">Item Number: {phone.uid}</p>
+            {typeof phone.avgRatings === "number" && <StarRating rating={phone.avgRatings} numReviews={phone.numReviews}/>}
+            <p id="price">${phone.price}</p>
           </div>
         </div>
         <div id="reviews">

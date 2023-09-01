@@ -9,6 +9,10 @@
   display: flex;
 }
 
+#product-info > * {
+  margin: 1%;
+}
+
 #product-phone-img {
   width: 25%;
   padding-top: 1%;
@@ -27,14 +31,28 @@
   padding: 1%;
 }
 
+#product-desc > * {
+  margin-bottom: 1%;
+}
+
 p#title {
   font-family: 'PublicSans';
   font-size: 28px;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
 }
 
-p#item-number {
+p#item-number, .ratings, #price {
   font-family: 'PublicSans';
   font-size: 24px;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
+}
+
+.star-rating {
+  font-size: 1.5em;
+  color: #fff24c;
+  display: flex;
+}
+
+.fas, .far {
+  margin-right: 0.2em;
 }
