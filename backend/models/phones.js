@@ -65,40 +65,137 @@ PhoneSchema.statics.getSoldOutSoon = function() {
   ]);
 }
 
-PhoneSchema.statics.searchTitle = async function(searchTitle, brands) {
+PhoneSchema.statics.searchTitle = async function(searchTitle, brands, sortBy) {
   var results = null;
-  if (brands == undefined) { 
-    results = await this.aggregate([
-      {$match: {$and: [
-        {title: {$regex: searchTitle, $options: 'i'}},
-        {disabled: false},
-        {stock: {$gt: 0}}
-      ]}},
-      {$group: {
-        _id: null,
-        phones: {$push: "$$ROOT"},
-        minPrice: {$min: "$price"},
-        maxPrice: {$max: "$price"},
-      }}
-    ])
+  if (brands == undefined) {
+    if (sortBy == undefined || sortBy === "Relevancy") {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ])
+    } else if (sortBy === "Price: Low - High") {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$sort: {price: 1}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ]);
+    } else if (sortBy === "Price: High - Low") {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$sort: {price: -1}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ])
+    } else {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$sort: {avgRatings: -1}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ])
+    }
   } else {
     if (typeof brands === 'string') {
       brands = [brands];
     }
-    results = await this.aggregate([
-      {$match: {$and: [
-        {title: {$regex: searchTitle, $options: 'i'}},
-        {brand: {$in: brands}},
-        {disabled: false},
-        {stock: {$gt: 0}}
-      ]}},
-      {$group: {
-        _id: null,
-        phones: {$push: "$$ROOT"},
-        minPrice: {$min: "$price"},
-        maxPrice: {$max: "$price"},
-      }}
-    ])
+    if (sortBy == undefined || sortBy === "Relevancy") {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {brand: {$in: brands}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ])
+    } else if (sortBy === "Price: Low - High") {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {brand: {$in: brands}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$sort: {price: 1}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ]);
+    } else if (sortBy === "Price: High - Low") {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {brand: {$in: brands}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$sort: {price: -1}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }},
+      ]);
+    } else {
+      results = await this.aggregate([
+        {$match: {$and: [
+          {title: {$regex: searchTitle, $options: 'i'}},
+          {brand: {$in: brands}},
+          {disabled: false},
+          {stock: {$gt: 0}}
+        ]}},
+        {$sort: {avgRatings: -1}},
+        {$group: {
+          _id: null,
+          phones: {$push: "$$ROOT"},
+          minPrice: {$min: "$price"},
+          maxPrice: {$max: "$price"},
+        }}
+      ])
+    }
   }
 
   var brands = await this.distinct('brand');

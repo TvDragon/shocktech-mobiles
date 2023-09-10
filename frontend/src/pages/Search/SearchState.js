@@ -70,6 +70,7 @@ function SearchState() {
     axios
       .get(route)
       .then((res) => {
+        setResults(res.data.phones);
         setShowResults(res.data.phones);
         setBrandNames(res.data.brands);
         setMinPrice(0);
@@ -110,6 +111,21 @@ function SearchState() {
   
   const togglePriceDropdown = () => {
     setIsPriceDropdownVisible(!isPriceDropdownVisible);
+  }
+
+  function sortBy(e) {
+    const sortByValue = e.target.value;
+    var route = `/api/search?searchTitle=${searchTitle}&sortBy=${sortByValue}`;
+    axios
+      .get(route)
+      .then((res) => {
+        setResults(res.data.phones);
+        setShowResults(res.data.phones);
+        setBrandNames(res.data.brands);
+        setMinPrice(0);
+        setMaxPrice(res.data.maxPrice);
+      })
+      .catch((err) => console.log(err));
   }
   
   return (
@@ -159,6 +175,17 @@ function SearchState() {
           </div>
         </div>
         <div className="component-two">
+          <div className="component-two-header">
+            <div className="sort-by-component">
+              <p className="sort-by-text">Sort By</p>
+              <select name="options" id="sort-by" onChange={sortBy}>
+                <option value="Relevancy">Relevancy</option>
+                <option value="Price: Low - High">Price: Low - High</option>
+                <option value="Price: High - Low">Price: High - Low</option>
+                <option value="Popularity">Popularity</option>
+              </select>
+            </div>
+          </div>
           <div className="phones">
             <DisplayPhones phones={showResults}/>
           </div>
