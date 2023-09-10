@@ -56,3 +56,18 @@ html{
 .text-color {
 	color: #2b2c30;
 }
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shared-btn {
+	background-color: #dcc3ac;
+	font-family: "PublicSans";
+	font-size: 23px;
+	color: #2b2c30;
+	padding: 1%;
+	border-radius: 30px;
+}

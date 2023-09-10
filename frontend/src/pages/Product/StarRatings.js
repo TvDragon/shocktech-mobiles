@@ -15,7 +15,9 @@ const StarRating = ({rating, numReviews, totalStars=5}) => {
       {Array(emptyStars).fill(null).map((_, index) => (
         <i key={index} className="far fa-star"></i>
       ))}
-      <p className="ratings text-color">{rating} ({numReviews} reviews)</p>
+      {numReviews ? (
+        <p className="ratings text-color">{rating} ({numReviews} reviews)</p>
+      ): (<div></div>)}
     </div>
   );
 };

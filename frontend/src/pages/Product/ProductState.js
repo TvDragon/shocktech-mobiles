@@ -5,6 +5,7 @@ import "../../css/global.css";
 import "../../css/product-state.css";
 import HeaderBar from "../../components/HeaderBar";
 import StarRating from "./StarRatings";
+import DisplayReviews from "./DisplayReviews";
 
 function ProductState() {
   const location = useLocation();
@@ -49,6 +50,10 @@ function ProductState() {
     }
   }
 
+  function writeReview() {
+
+  }
+
   return (
     <div className="content">
       <HeaderBar />
@@ -70,8 +75,13 @@ function ProductState() {
             </div>
           </div>
         </div>
-        <div id="reviews">
-          <p className="reviews-title">Reviews</p>
+        <div id="reviews-sec">
+          <div className="default-flex">
+            <p className="reviews-title text-color">Reviews</p>
+            <button className="shared-btn" onClick={writeReview}>Write a review</button>
+          </div>
+          <hr className="reviews"></hr>
+          <DisplayReviews reviews={phone.reviews}/>
         </div>
       </div>
     </div>

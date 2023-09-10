@@ -17,7 +17,7 @@
 #product-phone-img {
   width: 25%;
   padding-top: 1%;
-  padding-bottom: 1%;
+  /* padding-bottom: 1%; */
   /* background-color: red; */
 }
 
@@ -94,4 +94,38 @@ input.qty-input {
   font-size: 20px;
   letter-spacing: 3px;
   border-left: 2px #d9d9d8 solid;
+}
+
+div#reviews-sec {
+  width: 95%;
+  margin: auto;
+  padding-bottom: 1%;
+}
+
+.default-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+.reviews-title {
+  font-family: "PlayfairDisplay";
+  font-size: 30px;
+  letter-spacing: 3px;
+}
+
+hr.reviews {
+  display: block;
+  border-width: 1px;
+}
+
+div.review {
+  padding-bottom: 1%;
+}
+
+.reviewer, .comment {
+  font-family: "PublicSans";
+  font-size: 20px;
+  color: #2b2c30;
 }
