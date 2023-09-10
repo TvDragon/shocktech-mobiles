@@ -75,6 +75,25 @@ function ProductState() {
             </div>
           </div>
         </div>
+        <div id="product-info-small">
+          <div id="product-desc" className="center-desc">
+            <p id="title" className="text-color">{phone.title}</p>
+            <p id="item-number">Item Number: {phone.uid}</p>
+            {typeof phone.avgRatings === "number" && <StarRating rating={phone.avgRatings} numReviews={phone.numReviews}/>}
+            <div id="product-phone-img">
+              <img src={`${phone.image}`} alt={phone.image}/>
+            </div>
+            <p id="price">${phone.price}</p>
+            <div className="center-container">
+              <div className="quantity-add-to-cart">
+                <button className="minus-quantity text-color" onClick={minusQty}>−</button>
+                <input className="qty-input text-color" value={quantity} onChange={changeQuantity}></input>
+                <button className="add-quantity text-color" onClick={addQty}>+</button>
+                <button className="add-to-cart-btn text-color">Add To Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="reviews-sec">
           <div className="default-flex">
             <p className="reviews-title text-color">Reviews</p>

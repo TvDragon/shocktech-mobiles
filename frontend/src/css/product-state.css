@@ -10,6 +10,10 @@
   display: flex;
 }
 
+#product-info-small {
+  display: none;
+}
+
 #product-info > * {
   margin: 1%;
 }
@@ -31,6 +35,11 @@
   width: 75%;
   /* background-color: blue; */
   padding: 1%;
+}
+
+.center-desc {
+  margin: auto;
+  text-align: center;
 }
 
 #product-desc > * {
@@ -128,4 +137,25 @@ div.review {
   font-family: "PublicSans";
   font-size: 20px;
   color: #2b2c30;
+}
+
+@media only screen and (max-width: 1200px) {
+  #product-info {
+    display: none;
+  }
+
+  #product-info-small {
+    display: block;
+  }
+
+  #product-phone-img {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  #product-phone-img > img {
+    display: block;
+    margin: auto;
+    width: 100%;
+  }
 }
