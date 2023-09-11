@@ -143,6 +143,7 @@ div.review {
   margin: auto;
   background-color: #c4c4c1;
   padding: 10px 20px;
+  border-radius: 30px;
 }
 
 .review-form > .close {
