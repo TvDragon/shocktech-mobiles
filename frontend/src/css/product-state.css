@@ -139,6 +139,50 @@ div.review {
   color: #2b2c30;
 }
 
+.review-form {
+  margin: auto;
+  background-color: #c4c4c1;
+  padding: 10px 20px;
+}
+
+.review-form > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 25px;
+  right: 0;
+  top: -10px;
+  font-size: 24px;
+  background: #F6F3EE;
+  border-radius: 50%;
+  border: 1px solid #cfcece;
+}
+
+.review-form > br {
+  margin: 5px 0;
+}
+
+.review-form > label {
+  font-family: "PublicSans";
+  font-size: 24px;
+  color: #2b2c30;
+}
+
+.review-form > textarea {
+  width: 100%;
+  resize: none;
+  font-family: "PublicSans";
+  font-size: 24px;
+  border-radius: 5px;
+}
+
+.title-review {
+  font-family: "PlayfairDisplay";
+  font-size: 30px;
+  color: #2b2c30;
+}
+
 @media only screen and (max-width: 1200px) {
   #product-info {
     display: none;

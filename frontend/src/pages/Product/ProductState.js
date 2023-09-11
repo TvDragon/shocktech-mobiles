@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Popup from "reactjs-popup";
 import axios from "axios";
 import "../../css/global.css";
 import "../../css/product-state.css";
 import HeaderBar from "../../components/HeaderBar";
 import StarRating from "./StarRatings";
 import DisplayReviews from "./DisplayReviews";
+import Ratings from "./Ratings";
 
 function ProductState() {
   const location = useLocation();
@@ -13,6 +15,10 @@ function ProductState() {
   const uid = queryParams.get('uid');
   const [phone, setPhone] = useState([]);
   const [quantity, setQuantity] = useState(0);
+  const [comment, setComment] = useState("");
+  // const { user } = useContext(AuthContext);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
   
   useEffect(() => {
     setQuantity(1);
@@ -50,7 +56,7 @@ function ProductState() {
     }
   }
 
-  function writeReview() {
+  function submitReview() {
 
   }
 
@@ -97,7 +103,27 @@ function ProductState() {
         <div id="reviews-sec">
           <div className="default-flex">
             <p className="reviews-title text-color">Reviews</p>
-            <button className="shared-btn" onClick={writeReview}>Write a review</button>
+            <Popup trigger=
+              {<button className="shared-btn">Write a review</button>} modal nested>
+              {
+                close => (
+                  <form method='post' action=''>
+                    <div className="review-form">
+                      <button className="close" onClick={close}>&times;</button>
+                      <p className="title-review">My Review for {phone.title}</p>
+                      <label htmlFor="comment">Comment</label><br></br>
+                      <textarea type="text" id="comment" name="comment" rows="5"
+                        value={comment} onChange={(event) => setComment(event.target.value)}></textarea><br></br>
+                      <label htmlFor="rating">Rating</label><br></br>
+                      <Ratings rating={rating} hover={hover} setHover={setHover} setRating={setRating} />
+                      <div className="center-container">
+                        <button className="shared-btn" onClick={() => {submitReview(); close();}}>Submit Review</button>
+                      </div>
+                    </div>
+                  </form>
+                )
+              }
+            </Popup>
           </div>
           <hr className="reviews"></hr>
           <DisplayReviews reviews={phone.reviews}/>
