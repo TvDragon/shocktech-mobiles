@@ -116,6 +116,9 @@ function SearchState() {
   function sortBy(e) {
     const sortByValue = e.target.value;
     var route = `/api/search?searchTitle=${searchTitle}&sortBy=${sortByValue}`;
+    for (var i = 0; i < tickedBrands.length; i++) {
+      route += `&brand=${tickedBrands[i]}`;
+    }
     axios
       .get(route)
       .then((res) => {
