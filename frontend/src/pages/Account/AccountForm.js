@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import "../../css/global.css";
 import "../../css/account-form.css";
 import HeaderBar from "../../components/HeaderBar";
@@ -41,7 +42,22 @@ function AccountForm() {
         icon: "error",
       });
     } else {
-
+      axios
+        .post("/api/register", {fname, lname, email, password})
+        .then((res) => {
+          if (res.data.msg) {
+            MySwal.fire({
+              title: res.data.msg,
+              icon: "error"
+            });
+          } else {
+            MySwal.fire({
+              title: "Created New Account",
+              icon: "success"
+            })
+          }
+        })
+        .catch((err) => {console.log(err)});
     }
   }
   
