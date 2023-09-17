@@ -1,0 +1,55 @@
+#account-form {
+  width: 80%;
+  background-color: #d9d9d8;
+  margin: auto;
+  margin-top: 1%;
+  border-radius: 15px;
+}
+
+.header-account-form, #forms {
+  display: flex;
+}
+
+.header-account-form > button {
+  width: 50%;
+  text-align: center;
+  font-family: "PlayfairDisplay";
+  font-size: 30px;
+  color: #2b2c30;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.vert-line {
+  border: 1px solid black;
+}
+
+#forms {
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+#account-form {
+  margin-left: 1%;
+  margin: auto;
+  width: 60%;
+}
+
+#account-form > label, #account-form > input, .asterik {
+  font-family: "PublicSans";
+  font-size: 24px;
+  color: #2b2c30;
+}
+
+#account-form > input {
+  width: 100%;
+  background-color: #dcc3ac;
+  border: 2px solid #efeee7;
+}
+
+.asterik {
+  color: red;
+}

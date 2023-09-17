@@ -71,3 +71,21 @@ html{
 	padding: 1%;
 	border-radius: 30px;
 }
+
+.text-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.ps-fs-20 {
+	font-family: "PublicSans";
+	font-size: 20px;
+	color: #2b2c30;
+}
+
+.pfd-fs-28 {
+	font-family: "PlayfairDisplay Bold";
+	font-size: 28px;
+	color: #2b2c30;
+}
