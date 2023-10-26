@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "../../css/global.css";
 import "../../css/account-form.css";
 import HeaderBar from "../../components/HeaderBar";
+
+import AuthContext from "../../context/AuthContext";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -10,11 +13,13 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 function AccountForm() {
+  const navigate = useNavigate();
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {updateUser} = useContext(AuthContext);
 
   function displayLoginForm() {
     setShowLoginForm(true);
@@ -31,7 +36,32 @@ function AccountForm() {
         icon: "error",
       });
     } else {
-
+      axios
+        .post("/api/login", {email, password})
+        .then((res) => {
+          if (res.data.error) {
+            MySwal.fire({
+              title: res.data.error,
+              icon: "error"
+            });
+          } else {
+            localStorage.setItem("auth-token", res.data.token);
+            axios.post('/api/getUserFromToken', {token: localStorage.getItem("auth-token")})
+              .then((res) => {
+                updateUser(res.data.token.user);
+                navigate("/");
+              })
+              .catch((err) => {
+                console.log("ERROR INSIDE Login.js - LoginFunc()");
+              });
+              
+            MySwal.fire({
+              title: res.data.success,
+              icon: "success"
+            });
+          }
+        })
+        .catch((err) => {console.log(err)});
     }
   }
 
@@ -76,6 +106,16 @@ function AccountForm() {
   const changePassword = (e) => {
     setPassword(e.target.value);
   }
+
+  useEffect(() => {
+    let token = localStorage.getItem("auth-token");
+    axios.post('/api/validateToken', {token}, null).then((res) => {
+      // console.log(res);
+      // user = res.user;
+    }).catch((err) => {
+      // console.log(err);
+    });
+  }, [])
   
   return (
     <div className="content">

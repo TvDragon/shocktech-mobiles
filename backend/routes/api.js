@@ -14,4 +14,10 @@ router.get('/product', phonesController.getPhone);
 
 router.post('/register', usersController.register);
 
+router.post('/login', usersController.login);
+
+router.post('/getUserFromToken', usersController.getUserFromToken);
+
+router.post('/validateToken', usersController.validateToken);
+
 module.exports = router;
