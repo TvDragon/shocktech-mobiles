@@ -41,3 +41,26 @@ module.exports.getPhone = async function(req, res) {
   }
   return res.json({error: "No query for uid."});
 }
+
+module.exports.comment = async function(req, res) {
+  try {
+    const phone = req.body.phone;
+    const id = phone.uid;
+    const reviews = phone.reviews;
+    const numReviews = reviews.length;
+    var totalRatings = 0;
+    reviews.forEach((review) => {
+      totalRatings += review.rating;
+    });
+
+    const newAvgRatings = +((totalRatings + req.body.rating) / (numReviews + 1)).toFixed(2);
+    const success = Phone.submitReview(id, newAvgRatings, req.body.userId, req.body.review, req.body.rating);
+
+    if (success) {
+      return res.json({success: "Review Accepted"});
+    }
+    return res.json({error: "Cannot submit review"});
+  } catch (err) {
+    return res.json({error: "Cannot make a comment"});
+  }
+}

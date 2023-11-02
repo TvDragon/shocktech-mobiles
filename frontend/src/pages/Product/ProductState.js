@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
 import axios from "axios";
@@ -9,6 +9,13 @@ import StarRating from "./StarRatings";
 import DisplayReviews from "./DisplayReviews";
 import Ratings from "./Ratings";
 
+import AuthContext from "../../context/AuthContext";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
+
 function ProductState() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -16,23 +23,26 @@ function ProductState() {
   const [phone, setPhone] = useState([]);
   const [quantity, setQuantity] = useState(0);
   const [comment, setComment] = useState("");
-  // const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   
   useEffect(() => {
     setQuantity(1);
     if (uid) {
-      axios
-        .get("/api/product", {
-          params: {
-            uid: uid
-          }
-        })
-        .then((res) => {
-          setPhone(res.data);
-        })
-        .catch((err) => console.log(err));
+      const interval = setInterval(() => {
+        axios
+          .get("/api/product", {
+            params: {
+              uid: uid
+            }
+          })
+          .then((res) => {
+            setPhone(res.data);
+          })
+          .catch((err) => console.log(err));
+      }, 1000);
+      return () => clearInterval(interval);
     } else {
       console.log("uid not available");
     }
@@ -57,7 +67,39 @@ function ProductState() {
   }
 
   function submitReview() {
-
+    if (user) {
+      if (comment !== "") {
+        const userId = user._id;
+        axios
+          .post("/api/comment", {phone: phone, review: comment, rating: rating, userId: userId})
+          .then((res) => {
+            if (res.data.success) {
+              MySwal.fire({
+                title: "Review Accepted",
+                icon: "success"
+              });
+              setComment("");
+              setRating(0);
+            } else {
+              MySwal.fire({
+                title: "Error submitting review",
+                icon: "error"
+              });
+            }
+          })
+          .catch((err) => console.log(err));
+      } else {
+        MySwal.fire({
+          title: "You must type something in the review",
+          icon: "info"
+        });
+      }
+    } else {
+      MySwal.fire({
+        title: "You need to login to leave a review",
+        icon: "info"
+      });
+    }
   }
 
   return (
@@ -71,7 +113,7 @@ function ProductState() {
           <div id="product-desc">
             <p id="title" className="text-color">{phone.title}</p>
             <p id="item-number">Item Number: {phone.uid}</p>
-            {typeof phone.avgRatings === "number" && <StarRating rating={phone.avgRatings} numReviews={phone.numReviews}/>}
+            {typeof phone.avgRatings === "number" && <StarRating rating={phone.avgRatings} numReviews={Array.from(phone.reviews.entries()).length}/>}
             <p id="price">${phone.price}</p>
             <div className="quantity-add-to-cart">
               <button className="minus-quantity text-color" onClick={minusQty}>−</button>

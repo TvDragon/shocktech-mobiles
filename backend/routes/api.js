@@ -20,4 +20,6 @@ router.post('/getUserFromToken', usersController.getUserFromToken);
 
 router.post('/validateToken', usersController.validateToken);
 
+router.post('/comment', phonesController.comment);
+
 module.exports = router;
