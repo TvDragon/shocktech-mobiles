@@ -64,3 +64,27 @@ module.exports.comment = async function(req, res) {
     return res.json({error: "Cannot make a comment"});
   }
 }
+
+module.exports.hideReview = async function(req, res) {
+  try {
+    const success = Phone.hideReview(req.body.uid, req.body.comment);
+    if (success) {
+      return res.json({success: "Successfully hid review"});
+    }
+    return res.json({error: "Cannot hide review"});
+  } catch (err) {
+    return res.json({error: "Error hide review"});
+  }
+}
+
+module.exports.showReview = async function(req, res) {
+  try {
+    const success = Phone.showReview(req.body.uid, req.body.comment);
+    if (success) {
+      return res.json({success: "Show review"});
+    }
+    return res.json({error: "Cannot show review"});
+  } catch (err) {
+    return res.json({error: "Error show review"});
+  }
+}

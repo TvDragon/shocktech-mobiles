@@ -22,4 +22,8 @@ router.post('/validateToken', usersController.validateToken);
 
 router.post('/comment', phonesController.comment);
 
+router.post('/hideReview', phonesController.hideReview);
+
+router.post('/showReview', phonesController.showReview);
+
 module.exports = router;

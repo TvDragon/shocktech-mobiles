@@ -24,11 +24,17 @@ function ProductState() {
   const [quantity, setQuantity] = useState(0);
   const [comment, setComment] = useState("");
   const { user } = useContext(AuthContext);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   
   useEffect(() => {
     setQuantity(1);
+    if (user) {
+      if (user.admin !== undefined) {
+        setIsAdmin(user.admin);
+      }
+    }
     if (uid) {
       const interval = setInterval(() => {
         axios
@@ -168,7 +174,7 @@ function ProductState() {
             </Popup>
           </div>
           <hr className="reviews"></hr>
-          <DisplayReviews reviews={phone.reviews}/>
+          <DisplayReviews uid={uid} reviews={phone.reviews} isAdmin={isAdmin}/>
         </div>
       </div>
     </div>

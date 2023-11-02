@@ -197,6 +197,34 @@ PhoneSchema.statics.submitReview = async function(id, newAvgRatings, userId, com
   }
 }
 
+PhoneSchema.statics.hideReview = async function(id, comment) {
+  try {
+    await this.findOneAndUpdate(
+      {
+        uid: id,
+        'reviews.comment': comment
+      },
+      {$set: {'reviews.$.hidden': ""}}
+    );
+  } catch {
+    return false;
+  }
+}
+
+PhoneSchema.statics.showReview = async function(id, comment) {
+  try {
+    await this.findOneAndUpdate(
+      {
+        uid: id,
+        'reviews.comment': comment
+      },
+      {$set: {'reviews.$.hidden': false}}
+    );
+  } catch {
+    return false;
+  }
+}
+
 // Create model for Phones
 const Phone = mongoose.model('Phone', PhoneSchema, "Phones");
 

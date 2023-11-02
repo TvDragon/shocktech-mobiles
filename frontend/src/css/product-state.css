@@ -131,6 +131,12 @@ hr.reviews {
 
 div.review {
   padding-bottom: 1%;
+  display: flex;
+  justify-content: space-between;
+}
+
+div.review > .left {
+  width: 80%;
 }
 
 .reviewer, .comment {
