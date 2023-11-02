@@ -31,9 +31,9 @@ function DisplayReviews({uid, reviews, isAdmin}) {
     <div className="reviews">
       {reviews && reviews.length > 0 ? (
         Array.from(reviews.entries()).slice(0, displayViewsCount).map(([index, review]) => (
-          <div>
+          <div key={index}>
             {isAdmin ? (
-              <div key={index} className="review">
+              <div className="review">
                 <div className="left">
                   <p className="reviewer">{review.reviewerObj[0].firstname} {review.reviewerObj[0].lastname}</p>
                   <StarRating rating={review.rating}/>
@@ -45,7 +45,7 @@ function DisplayReviews({uid, reviews, isAdmin}) {
               </div>
             ): (<div>
               {review.hidden !== "" ? (
-               <div key={index} className="review">
+               <div className="review">
                 <div className="left">
                   <p className="reviewer">{review.reviewerObj[0].firstname} {review.reviewerObj[0].lastname}</p>
                   <StarRating rating={review.rating}/>

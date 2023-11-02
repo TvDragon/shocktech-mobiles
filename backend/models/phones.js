@@ -47,7 +47,7 @@ PhoneSchema.statics.getBestSellers = function() {
     {$match: {$and: [
       {disabled: false},
       {stock: {$gt: 0}},
-      {numReviews: {$gt: 1}}
+      {"reviews.1": {$exists: true}}  // Array length reviews at least size 2
     ]}},
     {$sort: {avgRatings: -1}},
     {$limit: 5}

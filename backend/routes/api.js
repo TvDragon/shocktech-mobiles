@@ -3,6 +3,7 @@ const router = express.Router();
 
 const phonesController = require("../controllers/phones-controller");
 const usersController = require("../controllers/users-controller");
+const cartsController = require("../controllers/carts-controller");
 
 router.get("/best-sellers", phonesController.getBestSellers);
 
@@ -25,5 +26,7 @@ router.post('/comment', phonesController.comment);
 router.post('/hideReview', phonesController.hideReview);
 
 router.post('/showReview', phonesController.showReview);
+
+router.post('/addToCart', cartsController.addToCart);
 
 module.exports = router;

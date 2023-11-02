@@ -55,7 +55,7 @@ function ProductState() {
   }, [uid]);
 
   function minusQty() {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   }
@@ -67,8 +67,8 @@ function ProductState() {
   }
 
   const changeQuantity = (e) => {
-    if (e.target.value <= phone.stock) {
-      setQuantity(e.target.value);
+    if (Number(e.target.value) <= phone.stock) {
+      setQuantity(Number(e.target.value));
     }
   }
 
@@ -108,6 +108,51 @@ function ProductState() {
     }
   }
 
+  function addToCart() {
+    if (user) {
+      if (quantity <= phone.stock) {
+        if (quantity > 0) {
+          axios
+            .post("/api/addToCart", {userId: user._id, uid: uid, quantity: quantity})
+            .then((res) => {
+              if (res.data.success) {
+                MySwal.fire({
+                  title: "Added To Cart",
+                  icon: "success"
+                });
+              } else if (res.data.error) {
+                MySwal.fire({
+                  title: res.data.error,
+                  icon: "error"
+                });
+              } else {
+                MySwal.fire({
+                  title: "Cannot add item to cart",
+                icon: "error"
+              });
+            }
+          })
+          .catch((err) => console.log(err));
+        } else {
+          MySwal.fire({
+            title: "Cannot have negative or zero quantity",
+            icon: "info"
+          });
+        }
+      } else {
+        MySwal.fire({
+          title: "Cannot purchase more than available stock",
+          icon: "info"
+        });
+      }
+    } else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
+  }
+
   return (
     <div className="content">
       <HeaderBar />
@@ -125,7 +170,7 @@ function ProductState() {
               <button className="minus-quantity text-color" onClick={minusQty}>−</button>
               <input className="qty-input text-color" value={quantity} onChange={changeQuantity}></input>
               <button className="add-quantity text-color" onClick={addQty}>+</button>
-              <button className="add-to-cart-btn text-color">Add To Cart</button>
+              <button className="add-to-cart-btn text-color" onClick={addToCart}>Add To Cart</button>
             </div>
           </div>
         </div>
