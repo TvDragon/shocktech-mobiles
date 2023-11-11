@@ -107,3 +107,22 @@ module.exports.getUserFromToken = async (req, res) => {
     return res.status(404).json({msg: err});
   }
 }
+
+module.exports.saveProfile = async function(req, res) {
+  const currEmail = req.body.currEmail;
+  const newEmail = req.body.newEmail;
+  const fname = req.body.fname;
+  const lname = req.body.lname;
+
+  if (newEmail === "" || fname === "" || lname === "") {
+    return res.json({msg: "Field is empty"});
+  } else {
+    var user = await User.findUser(newEmail);
+    if (user && currEmail !== newEmail) {
+      return res.json({msg: "Email already used"});
+    }
+    await User.updateProfile(currEmail, newEmail, fname, lname);
+    user = await User.findUser(newEmail);
+    return res.json({user: user});
+  }
+}

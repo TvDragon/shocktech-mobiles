@@ -1,0 +1,45 @@
+#account-information {
+  display: flex;
+}
+
+#account-information > #left-tab {
+  width: 30%;
+}
+
+#account-information > #account-info-tab {
+  width: 70%;
+  background-color: #d9d9d8;
+  border-radius: 30px;
+  padding: 1%;
+}
+
+.profile-options {
+  padding: 2%;
+  margin: auto;
+  background-color: #d9d9d8;
+  font-size: 24px;
+  font-family: 'PlayfairDisplay';
+  border-radius: 30px;
+  border: none;
+  letter-spacing: 5px;
+}
+
+#p-heading {
+  font-size: 30px;
+  font-family: 'PlayfairDisplay';
+}
+
+#personal-info > label, #personal-info > input, .asterik {
+  font-family: "PublicSans";
+  font-size: 24px;
+  color: #2b2c30;
+}
+
+#personal-info > input {
+  background-color: #dcc3ac;
+  border: 2px solid #efeee7;
+}
+
+.asterik {
+  color: red;
+}

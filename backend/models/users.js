@@ -25,6 +25,17 @@ UserSchema.statics.findUser = function(email) {
   return this.findOne({email: email});
 }
 
+UserSchema.statics.updateProfile = async function(currEmail, newEmail, fname, lname) {
+  await this.findOneAndUpdate(
+    {email: currEmail},
+    {$set: {
+      email: newEmail,
+      firstname: fname,
+      lastname: lname
+    }}
+  );
+}
+
 const User = mongoose.model('User', UserSchema, "Users");
 
 module.exports = User;

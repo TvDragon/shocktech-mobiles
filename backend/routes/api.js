@@ -29,4 +29,6 @@ router.post('/showReview', phonesController.showReview);
 
 router.post('/addToCart', cartsController.addToCart);
 
+router.post('/saveProfile', usersController.saveProfile);
+
 module.exports = router;
