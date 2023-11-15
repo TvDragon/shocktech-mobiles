@@ -126,3 +126,29 @@ module.exports.saveProfile = async function(req, res) {
     return res.json({user: user});
   }
 }
+
+module.exports.changePassword = async function(req, res) {
+  
+  try {
+    const email = req.body.email;
+    const currPassword = req.body.currPassword;
+    const newPassword = req.body.newPassword;
+    var user = await User.findUser(email);
+    if (!user) {
+      return res.json({error: "User does not exist"});
+    }
+    
+    const samePassword = await bcrypt.compare(currPassword, user.password);
+    if (samePassword) {
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      await User.changePassword(email, hashedPassword);
+      user = await User.findUser(email);
+      return res.json({user: user});
+    }
+
+    return res.json({error: "Password does not match"});
+  } catch {
+    return res.json({error: "Error changing password"});
+  }
+}

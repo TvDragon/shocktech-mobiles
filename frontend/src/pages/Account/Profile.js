@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "../../css/global.css";
 import "../../css/profile.css";
 import HeaderBar from "../../components/HeaderBar";
@@ -75,7 +76,7 @@ function Profile() {
           <button className="profile-options">ACCOUNT INFORMATION &#10148;</button><br></br><br></br>
           <button className="profile-options">MY ORDERS</button><br></br><br></br>
           <button className="profile-options">MY PRODUCT REVIEWS</button><br></br><br></br>
-          <button className="profile-options">CHANGE PASSWORD</button><br></br><br></br>
+          <Link to="/changePassword"><button className="profile-options">CHANGE PASSWORD</button></Link><br></br><br></br>
           {user.admin !== undefined ? (
             <div><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></div>
           ): <div></div>
@@ -86,11 +87,11 @@ function Profile() {
           <p id="p-heading">ACCOUNT INFORMATION</p>
           <hr></hr><br></br>
           <div id="personal-info">
-            <label>First Name</label><span className="asterik">*</span><br></br>
+            <label>First Name</label><br></br>
             <input type="text" value={fname} onChange={changeFname}></input><br></br><br></br>
-            <label>Last Name</label><span className="asterik">*</span><br></br>
+            <label>Last Name</label><br></br>
             <input type="text" value={lname} onChange={changeLname}></input><br></br><br></br>
-            <label>Email</label><span className="asterik">*</span><br></br>
+            <label>Email</label><br></br>
             <input type="email" value={email} onChange={changeEmail}></input><br></br><br></br>
             <button className="shared-btn" onClick={() => {saveProfile()}}>Save Profile</button>
           </div>

@@ -31,4 +31,6 @@ router.post('/addToCart', cartsController.addToCart);
 
 router.post('/saveProfile', usersController.saveProfile);
 
+router.post('/changePassword', usersController.changePassword);
+
 module.exports = router;

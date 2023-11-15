@@ -36,6 +36,13 @@ UserSchema.statics.updateProfile = async function(currEmail, newEmail, fname, ln
   );
 }
 
+UserSchema.statics.changePassword = async function(email, newPassword) { 
+  await this.findOneAndUpdate(
+    {email: email},
+    {$set: {password: newPassword}}
+  );
+}
+
 const User = mongoose.model('User', UserSchema, "Users");
 
 module.exports = User;
