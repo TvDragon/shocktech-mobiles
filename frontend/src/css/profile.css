@@ -13,6 +13,11 @@
   padding: 1%;
 }
 
+#account-information > #account-table {
+  width: 70%;
+  padding: 1%;
+}
+
 .profile-options {
   padding: 2%;
   margin: auto;
@@ -42,4 +47,21 @@
 
 .asterik {
   color: red;
+}
+
+table {
+  border: 3px solid black;
+  background-color: #d9d9d8;
+  width: 100%;
+  border-collapse: collapse; /* This property ensures that the borders are collapsed into a single border */
+}
+
+th, td {
+  border: 3px solid black; /* Add border to both th and td elements */
+  text-align: center;
+  padding: 8px; /* Add padding for better visual appearance */
+}
+
+.title-col {
+  width: 35%;
 }

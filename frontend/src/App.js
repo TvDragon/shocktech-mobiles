@@ -10,6 +10,7 @@ import ChangePassword from "./pages/Account/ChangePassword";
 import {AuthConProvider} from './context/AuthContext';
 
 import "./css/global.css";
+import ProductReviews from "./pages/Account/ProductReviews";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/account" element={<AccountForm />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/changePassword" element={<ChangePassword />} />
+              <Route path="/productReviews" element={<ProductReviews />} />
               <Route path="*" element={<ErrorState />} />
           </Routes>
         </BrowserRouter>

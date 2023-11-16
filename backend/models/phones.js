@@ -225,6 +225,14 @@ PhoneSchema.statics.showReview = async function(id, comment) {
   }
 }
 
+PhoneSchema.statics.productReviews = function(userId) {
+  return this.aggregate([
+    {$match: {$and: [
+      {'reviews.reviewer': userId}
+    ]}}
+  ]);
+}
+
 // Create model for Phones
 const Phone = mongoose.model('Phone', PhoneSchema, "Phones");
 

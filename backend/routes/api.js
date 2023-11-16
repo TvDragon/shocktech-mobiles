@@ -33,4 +33,6 @@ router.post('/saveProfile', usersController.saveProfile);
 
 router.post('/changePassword', usersController.changePassword);
 
+router.get('/productReviews', phonesController.productReviews);
+
 module.exports = router;

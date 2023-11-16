@@ -66,7 +66,7 @@ function ChangePassword() {
         <div id="left-tab">
           <Link to="/profile"><button className="profile-options">ACCOUNT INFORMATION</button></Link><br></br><br></br>
           <button className="profile-options">MY ORDERS</button><br></br><br></br>
-          <button className="profile-options">MY PRODUCT REVIEWS</button><br></br><br></br>
+          <Link to="/productReviews"><button className="profile-options">MY PRODUCT REVIEWS</button></Link><br></br><br></br>
           <button className="profile-options">CHANGE PASSWORD &#10148;</button><br></br><br></br>
           {user.admin !== undefined ? (
             <div><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></div>

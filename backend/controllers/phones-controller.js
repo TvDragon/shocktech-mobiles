@@ -88,3 +88,16 @@ module.exports.showReview = async function(req, res) {
     return res.json({error: "Error show review"});
   }
 }
+
+module.exports.productReviews = async function(req, res) {
+  try {
+    const userId = req.query.userId;
+    const results = await Phone.productReviews(userId);
+    if (results.length === 0) {
+      return res.json({msg: "No product reviews"});
+    }
+    return res.json({results: results});
+  } catch (err) {
+    return res.json({error: "Error get product reviews"});
+  }
+}
