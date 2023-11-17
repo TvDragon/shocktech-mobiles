@@ -65,3 +65,17 @@ th, td {
 .title-col {
   width: 35%;
 }
+
+.view-more {
+  font-family: 'PublicSans';
+  border: none;
+  background-color: inherit;
+  font-size: 16px;
+}
+
+.review-back-btn {
+  border: none;
+  background-color: inherit;
+  font-family: 'PlayfairDisplay';
+  font-size: 30px;
+}
