@@ -45,7 +45,7 @@ module.exports.getPhone = async function(req, res) {
 module.exports.comment = async function(req, res) {
   try {
     const phone = req.body.phone;
-    const id = phone.uid;
+    const id = phone._id;
     const reviews = phone.reviews;
     const numReviews = reviews.length;
     var totalRatings = 0;

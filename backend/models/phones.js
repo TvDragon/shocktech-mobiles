@@ -178,7 +178,7 @@ PhoneSchema.statics.getPhone = async function(uid) {
   ])
 }
 
-PhoneSchema.statics.submitReview = async function(id, newAvgRatings, userId, comment, rating) {
+PhoneSchema.statics.submitReview = async function(phoneId, newAvgRatings, userId, comment, rating) {
 
   const newReview = {reviewer: userId, rating: rating, comment: comment};
   const options = { upsert: true, new: true };  // upsert if the object doesn't exist, and return the updated object
@@ -186,7 +186,7 @@ PhoneSchema.statics.submitReview = async function(id, newAvgRatings, userId, com
   // need to get phone data and update it
   try {
     await this.findOneAndUpdate(
-      {uid: id}, // filter to find object
+      {_id: phoneId}, // filter to find object
       {$push: {reviews: newReview},
         $set: {avgRatings: newAvgRatings}},  // update object by pushing new review into array reviews
       options
