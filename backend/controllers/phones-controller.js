@@ -101,3 +101,15 @@ module.exports.productReviews = async function(req, res) {
     return res.json({error: "Error get product reviews"});
   }
 }
+
+module.exports.deleteReview = async function(req, res) {
+  try {
+    const phoneId = req.body.phoneId;
+    const reviewerId = req.body.userId;
+    await Phone.deleteReview(phoneId, reviewerId);
+
+    return res.json({success: "Delete Review"});
+  } catch (err) {
+    return res.json({error: "Error deleting review"});
+  }
+}

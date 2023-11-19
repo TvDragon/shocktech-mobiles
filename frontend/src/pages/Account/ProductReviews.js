@@ -16,6 +16,7 @@ const MySwal = withReactContent(Swal);
 function ProductReviews() {
   const {user} = useContext(AuthContext);
   const [results, setResults] = useState([]);
+  const [phoneId, setPhoneId] = useState(0);
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -37,9 +38,10 @@ function ProductReviews() {
             }
           })
           .catch((err) => console.log(err));
-  }, []);
+  }, [viewReview]);
   
-  function setReview(phoneTitle, userRating, userComment) {
+  function setReview(phoneID, phoneTitle, userRating, userComment) {
+    setPhoneId(phoneID);
     setTitle(phoneTitle);
     setRating(userRating);
     setComment(userComment);
@@ -64,7 +66,7 @@ function ProductReviews() {
         {viewReview ? (
           <div id="account-info-tab">
             <p id="p-heading"><button className="review-back-btn" onClick={() => {setViewReview(false)}}>&laquo;</button> REVIEW</p><hr></hr><br></br>
-            <FullReview title={title} rating={rating} comment={comment}/>
+            <FullReview phoneId={phoneId} title={title} rating={rating} comment={comment} setViewReview={setViewReview}/>
           </div>
         ): (
           <div id="account-table">
@@ -86,7 +88,7 @@ function ProductReviews() {
                             .filter((review) => review.reviewer === user._id)
                             .map((filteredReview) => filteredReview.rating).join(', ')}
                         </td>
-                        <td><button className="view-more" onClick={() => {setReview(phone.title,
+                        <td><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
                             phone.reviews.filter((review) => review.reviewer === user._id)
                               .map((filteredReview) => filteredReview.rating).join(', '),
                             phone.reviews.filter((review) => review.reviewer === user._id)

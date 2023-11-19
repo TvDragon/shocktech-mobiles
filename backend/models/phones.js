@@ -233,6 +233,13 @@ PhoneSchema.statics.productReviews = function(userId) {
   ]);
 }
 
+PhoneSchema.statics.deleteReview = async function(phoneId, reviewerId) {
+ await this.updateOne(
+  {_id: phoneId},
+  {$pull: {reviews: {reviewer: reviewerId}}}
+ );
+}
+
 // Create model for Phones
 const Phone = mongoose.model('Phone', PhoneSchema, "Phones");
 

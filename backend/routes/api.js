@@ -35,4 +35,6 @@ router.post('/changePassword', usersController.changePassword);
 
 router.get('/productReviews', phonesController.productReviews);
 
+router.post('/deleteReview', phonesController.deleteReview);
+
 module.exports = router;
