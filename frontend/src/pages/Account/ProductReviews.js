@@ -72,23 +72,23 @@ function ProductReviews() {
           <div id="account-table">
             <p id="p-heading">MY PRODUCT REVIEWS</p><br></br>
             {results && results.length > 0 ? (
-              <table>
+              <table id="product-reviews">
                 <tr>
-                  <th>Phone</th>
-                  <th>Rating</th>
-                  <th>Action</th>
+                  <th className="product-reviews">Phone</th>
+                  <th className="product-reviews">Rating</th>
+                  <th className="product-reviews">Action</th>
                 </tr>
                 {
                   results.map((phone) => {
                     return (
                       <tr key={phone.uid}>
-                        <td className="title-col">{phone.title}</td>
-                        <td>
+                        <td className="title-col product-reviews">{phone.title}</td>
+                        <td className="product-reviews">
                           {phone.reviews
                             .filter((review) => review.reviewer === user._id)
                             .map((filteredReview) => filteredReview.rating).join(', ')}
                         </td>
-                        <td><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
+                        <td className="product-reviews"><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
                             phone.reviews.filter((review) => review.reviewer === user._id)
                               .map((filteredReview) => filteredReview.rating).join(', '),
                             phone.reviews.filter((review) => review.reviewer === user._id)

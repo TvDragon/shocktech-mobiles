@@ -49,14 +49,14 @@
   color: red;
 }
 
-table {
+table#product-reviews {
   border: 3px solid black;
   background-color: #d9d9d8;
   width: 100%;
   border-collapse: collapse; /* This property ensures that the borders are collapsed into a single border */
 }
 
-th, td {
+th.product-reviews, td.product-reviews {
   border: 3px solid black; /* Add border to both th and td elements */
   text-align: center;
   padding: 8px; /* Add padding for better visual appearance */
