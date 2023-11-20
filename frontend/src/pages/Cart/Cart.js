@@ -18,7 +18,7 @@ function Cart() {
   const [phones, setPhones] = useState([]);
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
+  function updateCart() {
     if (user) {
       axios.get('/api/cart', {
           params: {
@@ -31,10 +31,10 @@ function Cart() {
           var retrievedPhones = [];
           var currTotal = 0;
           for (let i = 0; i < shoppingCart.length; i++) {
-            const phoneId = shoppingCart[i].phoneId;
+            const phoneUid = shoppingCart[i].phoneUid;
             await axios.get('/api/product', {
               params: {
-                uid: phoneId
+                uid: phoneUid
               }
             })
             .then((res) => {
@@ -48,10 +48,14 @@ function Cart() {
         })
         .catch((err) => console.log(err));
     }
+  }
+
+  useEffect(() => {
+    updateCart();
   }, [cart]);
 
-  function removeFromCart(phoneId) {
-    axios.post('/api/removeFromCart', {userId: user._id, phoneUid: phoneId})
+  function removeFromCart(phoneUid) {
+    axios.post('/api/removeFromCart', {userId: user._id, phoneUid: phoneUid})
       .then((res) => {
         if (res.data.error) {
           MySwal.fire({
@@ -81,6 +85,7 @@ function Cart() {
             title: res.data.success,
             icon: "success"
           });
+          updateCart();
         }
       })
       .catch((err) => console.log(err));
@@ -110,13 +115,13 @@ function Cart() {
                   const item = cart[i];
                   const phone = phones[i];
                   rows.push(
-                    <tr key={item.phoneId}>
+                    <tr key={item.phoneUid}>
                       <td className="cart-img cart"><img className='phone-img' src={`${phone.image}`} alt={phone.image}/></td>
                       <td className="cart-title cart ps-fs-24">{phone.title}</td>
                       <td className="cart ps-fs-20">${phone.price}</td>
                       <td className="cart ps-fs-20">{item.quantity}</td>
                       <td className="cart ps-fs-20">${phone.price * item.quantity}</td>
-                      <td className="cart"><img className="icon-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneId)}}></img></td>
+                      <td className="cart"><img className="icon-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid)}}></img></td>
                     </tr>
                   );
                 }

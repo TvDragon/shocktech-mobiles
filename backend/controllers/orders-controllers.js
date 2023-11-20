@@ -1,5 +1,6 @@
 const Order = require("../models/orders");
 const Cart = require("../models/carts");
+const Phone = require("../models/phones");
 
 min = 100000000000;
 max = 1000000000000;
@@ -24,8 +25,15 @@ module.exports.checkout = async function(req, res) {
     const cart = await Cart.getCart(userId);
     if (cart) {
       await Order.checkout(userId, cart.items, orderId);
-      // need to reduce quantity from phone listing
-      // need to remove items from shopping cart
+      // Reduce quantity from phone listing
+      const items = cart.items;
+      const len = items.length;
+      for (let i = 0; i < len; i++) {
+        const item = items[i];
+        await Phone.orderPhone(item.phoneUid, item.quantity);
+      }
+      // Remove items from shopping cart
+      await Cart.removeItemsFromCart(userId);
       return res.json({success: "Ordered items"});
     }
     return res.json({error: "No items in cart to checkout"});

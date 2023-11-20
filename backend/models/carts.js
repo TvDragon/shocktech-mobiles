@@ -14,18 +14,18 @@ const CartSchema = new Schema({
   }
 }, { versionKey: false, strict: false });
 
-CartSchema.statics.addToCart = async function(phoneId, userId, quantity) {
-  const addPhone = {phoneId: phoneId, quantity: quantity};
+CartSchema.statics.addToCart = async function(phoneUid, userId, quantity) {
+  const addPhone = {phoneUid: phoneUid, quantity: quantity};
 
   try {
     const cart = await this.findOne({userId: userId});
 
     if (cart) {
-      const existingPhone = cart.items.find(p => p.phoneId === phoneId);
+      const existingPhone = cart.items.find(p => p.phoneUid === phoneUid);
       if (existingPhone) {
         // Increment the quantity for an existing phone
         await this.findOneAndUpdate(
-          { userId: userId, "items.phoneId": phoneId },
+          { userId: userId, "items.phoneUid": phoneUid },
           { $inc: { "items.$.quantity": quantity } }
         );
       } else {
@@ -47,11 +47,11 @@ CartSchema.statics.addToCart = async function(phoneId, userId, quantity) {
   }
 }
 
-CartSchema.statics.getCartQuantity = async function(userId, phoneId) {
+CartSchema.statics.getCartQuantity = async function(userId, phoneUid) {
   const cart = await this.findOne({userId: userId});
 
   if (cart) {
-    const cartItem = cart.items.find(item => item.phoneId === phoneId);
+    const cartItem = cart.items.find(item => item.phoneUid === phoneUid);
 
     if (cartItem) {
       return {"quantity": cartItem.quantity};
@@ -67,7 +67,14 @@ CartSchema.statics.getCart = function(userId) {
 CartSchema.statics.removeFromCart = async function(userId, phoneUid) {
   await this.updateOne(
     {userId: userId},
-    {$pull: {items: {phoneId: phoneUid}}}
+    {$pull: {items: {phoneUid: phoneUid}}}
+  );
+}
+
+CartSchema.statics.removeItemsFromCart = async function(userId) {
+  await this.updateOne(
+    {userId: userId},
+    {$set: {items: []}}
   );
 }
 

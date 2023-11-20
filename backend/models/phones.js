@@ -36,6 +36,10 @@ const PhoneSchema = new Schema({
     type: Number,
     default: 100000,
   },
+  uid: {
+    type: Number,
+    default: 100000,
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -238,6 +242,25 @@ PhoneSchema.statics.deleteReview = async function(phoneId, reviewerId) {
   {_id: phoneId},
   {$pull: {reviews: {reviewer: reviewerId}}}
  );
+}
+
+PhoneSchema.statics.orderPhone = async function(phoneUid, quantity) {
+  const phones = await this.aggregate([
+    {$match: {uid: phoneUid}}
+  ]);
+  const phone = phones[0];
+  var newQuantity = phone.stock - quantity;
+  if (newQuantity < 1) {
+    newQuantity = 0;
+    await this.updateOne(
+      {uid: phoneUid},
+      {$set: {disabled: true}}
+    );
+  }
+  await this.updateOne(
+    {uid: phoneUid},
+    {$set: {stock: newQuantity}}
+  );
 }
 
 // Create model for Phones
