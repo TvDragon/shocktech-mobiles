@@ -60,6 +60,17 @@ CartSchema.statics.getCartQuantity = async function(userId, phoneId) {
   return {"quantity": 0};
 }
 
+CartSchema.statics.getCart = function(userId) {
+  return this.findOne({userId: userId});
+}
+
+CartSchema.statics.removeFromCart = async function(userId, phoneUid) {
+  await this.updateOne(
+    {userId: userId},
+    {$pull: {items: {phoneId: phoneUid}}}
+  );
+}
+
 // Create model for Carts
 const Cart = mongoose.model('Cart', CartSchema, "Carts");
 

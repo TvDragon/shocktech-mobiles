@@ -73,31 +73,35 @@ function ProductReviews() {
             <p id="p-heading">MY PRODUCT REVIEWS</p><br></br>
             {results && results.length > 0 ? (
               <table id="product-reviews">
-                <tr>
-                  <th className="product-reviews">Phone</th>
-                  <th className="product-reviews">Rating</th>
-                  <th className="product-reviews">Action</th>
-                </tr>
-                {
-                  results.map((phone) => {
-                    return (
-                      <tr key={phone.uid}>
-                        <td className="title-col product-reviews">{phone.title}</td>
-                        <td className="product-reviews">
-                          {phone.reviews
-                            .filter((review) => review.reviewer === user._id)
-                            .map((filteredReview) => filteredReview.rating).join(', ')}
-                        </td>
-                        <td className="product-reviews"><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
-                            phone.reviews.filter((review) => review.reviewer === user._id)
-                              .map((filteredReview) => filteredReview.rating).join(', '),
-                            phone.reviews.filter((review) => review.reviewer === user._id)
-                              .map((filteredReview) => filteredReview.comment).join(', ')
-                            )}}>View More</button></td>
-                      </tr>  
-                    )
-                  })
-                }
+                <thead>
+                  <tr>
+                    <th className="product-reviews">Phone</th>
+                    <th className="product-reviews">Rating</th>
+                    <th className="product-reviews">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    results.map((phone) => {
+                      return (
+                        <tr key={phone.uid}>
+                          <td className="title-col product-reviews">{phone.title}</td>
+                          <td className="product-reviews">
+                            {phone.reviews
+                              .filter((review) => review.reviewer === user._id)
+                              .map((filteredReview) => filteredReview.rating).join(', ')}
+                          </td>
+                          <td className="product-reviews"><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
+                              phone.reviews.filter((review) => review.reviewer === user._id)
+                                .map((filteredReview) => filteredReview.rating).join(', '),
+                              phone.reviews.filter((review) => review.reviewer === user._id)
+                                .map((filteredReview) => filteredReview.comment).join(', ')
+                              )}}>View More</button></td>
+                        </tr>  
+                      )
+                    })
+                  }
+                </tbody>
               </table>
             ): (<div>
                 No product reviews

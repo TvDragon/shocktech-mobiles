@@ -1,0 +1,40 @@
+.cart-page {
+  width: 95%;
+  margin: auto;
+  padding: 1%;
+  border-radius: 10px;
+  background-color: #d9d9d8;
+}
+
+.p-heading {
+  font-size: 30px;
+  font-family: 'PlayfairDisplay';
+  color: #2b2c30;
+}
+
+table#cart {
+  width: 100%;
+  border-collapse: collapse; /* This property ensures that the borders are collapsed into a single border */
+}
+
+th.cart, td.cart {
+  border-bottom: 3px solid black;
+  text-align: center;
+}
+
+th.cart-img, td.cart-img {
+  width: 15%;
+}
+
+th.cart-title, td.cart-title {
+  width: 40%;
+}
+
+.checkout-btn {
+	background-color: #dcc3ac;
+	font-family: "PublicSans";
+	font-size: 20px;
+	color: #2b2c30;
+	padding: 3%;
+	border-radius: 30px;
+}

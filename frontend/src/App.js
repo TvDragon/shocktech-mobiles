@@ -6,6 +6,7 @@ import AccountForm from "./pages/Account/AccountForm";
 import ErrorState from "./pages/Error/ErrorState";
 import Profile from "./pages/Account/Profile";
 import ChangePassword from "./pages/Account/ChangePassword";
+import Cart from "./pages/Cart/Cart";
 
 import {AuthConProvider} from './context/AuthContext';
 
@@ -25,6 +26,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/changePassword" element={<ChangePassword />} />
               <Route path="/productReviews" element={<ProductReviews />} />
+              <Route path="/cart" element={<Cart />} />
               <Route path="*" element={<ErrorState />} />
           </Routes>
         </BrowserRouter>

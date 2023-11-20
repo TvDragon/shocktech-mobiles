@@ -4,6 +4,7 @@ const router = express.Router();
 const phonesController = require("../controllers/phones-controller");
 const usersController = require("../controllers/users-controller");
 const cartsController = require("../controllers/carts-controller");
+const ordersController = require("../controllers/orders-controllers");
 
 router.get("/best-sellers", phonesController.getBestSellers);
 
@@ -29,6 +30,8 @@ router.post('/showReview', phonesController.showReview);
 
 router.post('/addToCart', cartsController.addToCart);
 
+router.post('/removeFromCart', cartsController.removeFromCart);
+
 router.post('/saveProfile', usersController.saveProfile);
 
 router.post('/changePassword', usersController.changePassword);
@@ -36,5 +39,9 @@ router.post('/changePassword', usersController.changePassword);
 router.get('/productReviews', phonesController.productReviews);
 
 router.post('/deleteReview', phonesController.deleteReview);
+
+router.get('/cart', cartsController.getCart);
+
+router.post('/checkout', ordersController.checkout);
 
 module.exports = router;

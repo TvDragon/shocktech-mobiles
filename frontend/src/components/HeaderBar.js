@@ -60,7 +60,7 @@ function HeaderBar() {
                 }
               </div>
               <div className="icon">
-                <Link to="/shoppingCart">
+                <Link to="/cart">
                   <img className="icon-image" src={ShoppingCartIcon} alt={ShoppingCartIcon}></img>
                 </Link>
               </div>
@@ -81,7 +81,7 @@ function HeaderBar() {
                 }
               </div>
               <div className="icon">
-                <Link to="/shoppingCart">
+                <Link to="/cart">
                   <img className="icon-image" src={ShoppingCartIcon} alt={ShoppingCartIcon}></img>
                 </Link>
               </div>

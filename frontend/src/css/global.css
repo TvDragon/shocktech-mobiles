@@ -84,6 +84,12 @@ html{
 	color: #2b2c30;
 }
 
+.ps-fs-24 {
+	font-family: "PublicSans";
+	font-size: 24px;
+	color: #2b2c30;
+}
+
 .pfd-fs-28 {
 	font-family: "PlayfairDisplay Bold";
 	font-size: 28px;
@@ -96,4 +102,16 @@ html{
 
 .fs-22 {
 	font-size: 22px;
+}
+
+.phone-img {
+	width: 204px;
+	height: 200px;
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.center-text {
+	text-align: center;
 }

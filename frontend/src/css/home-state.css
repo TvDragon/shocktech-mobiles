@@ -32,14 +32,6 @@ h1.headings {
 	margin: 5% auto;
 }
 
-.phone-img {
-	width: 204px;
-	height: 200px;
-	display: block;
-	margin: 0 auto;
-	text-align: center;
-}
-
 .title, .price {
 	text-align: center;
 	font-family: 'Public Sans';

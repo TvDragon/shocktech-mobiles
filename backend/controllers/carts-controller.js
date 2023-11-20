@@ -22,3 +22,30 @@ module.exports.addToCart = async function(req, res) {
   }
   return res.json({error: "Not valid Phone UID"});
 }
+
+module.exports.getCart = async function(req, res) {
+  const userId = req.query.userId;
+  if (userId) {
+    const cart = await Cart.getCart(userId);
+
+    if (cart) {
+      return res.json({cart: cart});
+    }
+    return res.json({error: "No items in cart"});
+  }
+  return res.json({error: "Not valid userId"});
+}
+
+module.exports.removeFromCart = async function(req, res) {
+  const userId = req.body.userId;
+  const phoneUid = req.body.phoneUid;
+  if (userId && phoneUid) {
+    try {
+      await Cart.removeFromCart(userId, phoneUid);
+      return res.json({success: "Deleted item from cart"});
+    } catch (err) {
+      return res.json({error: err});
+    }
+  }
+  return res.json({error: "Not valid User Id or Phone Uid"});
+}
