@@ -44,4 +44,6 @@ router.get('/cart', cartsController.getCart);
 
 router.post('/checkout', ordersController.checkout);
 
+router.get('/orders', ordersController.getOrders);
+
 module.exports = router;

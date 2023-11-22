@@ -5,13 +5,14 @@ import ProductState from "./pages/Product/ProductState";
 import AccountForm from "./pages/Account/AccountForm";
 import ErrorState from "./pages/Error/ErrorState";
 import Profile from "./pages/Account/Profile";
+import Orders from "./pages/Account/Orders";
+import ProductReviews from "./pages/Account/ProductReviews";
 import ChangePassword from "./pages/Account/ChangePassword";
 import Cart from "./pages/Cart/Cart";
 
 import {AuthConProvider} from './context/AuthContext';
 
 import "./css/global.css";
-import ProductReviews from "./pages/Account/ProductReviews";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/product" element={<ProductState />} />
               <Route path="/account" element={<AccountForm />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/orders" element={<Orders />} />
               <Route path="/changePassword" element={<ChangePassword />} />
               <Route path="/productReviews" element={<ProductReviews />} />
               <Route path="/cart" element={<Cart />} />

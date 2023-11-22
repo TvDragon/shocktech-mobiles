@@ -49,17 +49,25 @@
   color: red;
 }
 
-table#product-reviews {
+table#profile-table {
   border: 3px solid black;
   background-color: #d9d9d8;
   width: 100%;
   border-collapse: collapse; /* This property ensures that the borders are collapsed into a single border */
 }
 
-th.product-reviews, td.product-reviews {
+tr#order-header > * {
+  width: 20%;
+}
+
+th.profile-cell, td.profile-cell {
   border: 3px solid black; /* Add border to both th and td elements */
   text-align: center;
   padding: 8px; /* Add padding for better visual appearance */
+}
+
+td.total {
+  padding-left: 8px;
 }
 
 .title-col {
