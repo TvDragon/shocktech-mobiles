@@ -6,7 +6,7 @@ import StarRating from "./StarRatings";
 
 function DisplayReviews({uid, reviews, isAdmin}) {
   const [displayViewsCount, setDisplayViewsCount] = useState(5);
-  
+
   function showMore() {
     setDisplayViewsCount(displayViewsCount + 5);
   }
@@ -32,28 +32,32 @@ function DisplayReviews({uid, reviews, isAdmin}) {
       {reviews && reviews.length > 0 ? (
         Array.from(reviews.entries()).slice(0, displayViewsCount).map(([index, review]) => (
           <div key={index}>
-            {isAdmin ? (
-              <div className="review">
-                <div className="left">
+            {review.reviewerObj[0] ? (
+              <div>
+                {isAdmin ? (
+                  <div className="review">
+                  <div className="left">
                   <p className="reviewer">{review.reviewerObj[0].firstname} {review.reviewerObj[0].lastname}</p>
                   <StarRating rating={review.rating}/>
                   <p className="comment">{review.comment}</p>
-                </div>
-                {review.hidden !== "" ? (
+                  </div>
+                  {review.hidden !== "" ? (
                     <button className="shared-btn" onClick={() => hideReview(review.comment)}>Hide Review</button>
-                ): (<button className="shared-btn" onClick={() => showReview(review.comment)}>Show Review</button>)}
-              </div>
-            ): (<div>
-              {review.hidden !== "" ? (
-               <div className="review">
-                <div className="left">
+                    ): (<button className="shared-btn" onClick={() => showReview(review.comment)}>Show Review</button>)}
+                    </div>
+                    ): (<div>
+                      {review.hidden !== "" ? (
+                <div className="review">
+                  <div className="left">
                   <p className="reviewer">{review.reviewerObj[0].firstname} {review.reviewerObj[0].lastname}</p>
                   <StarRating rating={review.rating}/>
                   <p className="comment">{review.comment}</p>
-                </div>
-              </div> 
-              ): (<div></div>)}
-            </div>)}
+                  </div>
+                  </div> 
+                  ): (<div></div>)}
+                </div>)}
+              </div>
+            ): (<div>No Reviews</div>)}
           </div>
         ))
       ): <div>No Reviews</div>}

@@ -54,7 +54,7 @@ function ProductReviews() {
       <div id="account-information">
         <div id="left-tab">
           <Link to="/profile"><button className="profile-options">ACCOUNT INFORMATION</button></Link><br></br><br></br>
-          <button className="profile-options">MY ORDERS</button><br></br><br></br>
+          <Link to="/orders"><button className="profile-options">MY ORDERS</button></Link><br></br><br></br>
           <button className="profile-options">MY PRODUCT REVIEWS &#10148;</button><br></br><br></br>
           <Link to="/changePassword"><button className="profile-options">CHANGE PASSWORD</button></Link><br></br><br></br>
           {user.admin !== undefined ? (
@@ -72,12 +72,12 @@ function ProductReviews() {
           <div id="account-table">
             <p id="p-heading">MY PRODUCT REVIEWS</p><br></br>
             {results && results.length > 0 ? (
-              <table id="product-reviews">
+              <table id="profile-table">
                 <thead>
                   <tr>
-                    <th className="product-reviews">Phone</th>
-                    <th className="product-reviews">Rating</th>
-                    <th className="product-reviews">Action</th>
+                    <th className="profile-cell">Phone</th>
+                    <th className="profile-cell">Rating</th>
+                    <th className="profile-cell">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -85,13 +85,13 @@ function ProductReviews() {
                     results.map((phone) => {
                       return (
                         <tr key={phone.uid}>
-                          <td className="title-col product-reviews">{phone.title}</td>
-                          <td className="product-reviews">
+                          <td className="title-col profile-cell">{phone.title}</td>
+                          <td className="profile-cell">
                             {phone.reviews
                               .filter((review) => review.reviewer === user._id)
                               .map((filteredReview) => filteredReview.rating).join(', ')}
                           </td>
-                          <td className="product-reviews"><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
+                          <td className="profile-cell"><button className="view-more" onClick={() => {setReview(phone._id, phone.title,
                               phone.reviews.filter((review) => review.reviewer === user._id)
                                 .map((filteredReview) => filteredReview.rating).join(', '),
                               phone.reviews.filter((review) => review.reviewer === user._id)
