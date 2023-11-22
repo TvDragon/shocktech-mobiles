@@ -73,7 +73,7 @@ function Cart() {
   }
 
   function checkOut() {
-    axios.post('/api/checkout', {userId: user._id})
+    axios.post('/api/checkout', {userId: user._id, total: total})
       .then((res) => {
         if (res.data.error) {
           MySwal.fire({
