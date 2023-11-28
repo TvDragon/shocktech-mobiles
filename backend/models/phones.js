@@ -46,6 +46,10 @@ const PhoneSchema = new Schema({
   }
 }, { versionKey: false, strict: false });
 
+PhoneSchema.statics.getPhones = function() {
+  return this.find({});
+}
+
 PhoneSchema.statics.getBestSellers = function() {
   return this.aggregate([
     {$match: {$and: [

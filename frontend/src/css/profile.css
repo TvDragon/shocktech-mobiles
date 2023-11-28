@@ -87,3 +87,38 @@ td.total {
   font-family: 'PlayfairDisplay';
   font-size: 30px;
 }
+
+#listing-bar {
+  display: flex;
+}
+
+.add-listing-btn {
+  background-color: #dcc3ac;
+  font-family: 'PublicSans';
+  font-size: 20px;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+#table-listings {
+  border: 3px solid black;
+  background-color: #d9d9d8;
+  width: 100%;
+  border-collapse: collapse; /* This property ensures that the borders are collapsed into a single border */
+  margin: 1% 0px;
+}
+
+tr.listings-row > * {
+  font-family: 'PublicSans';
+  font-size: 16px;
+  border: 3px solid black; /* Add border to both th and td elements */
+  text-align: center;
+  padding: 8px; /* Add padding for better visual appearance */
+  width: 14%;
+}
+
+.cell-icons {
+  width: 15%;
+  height: 15%;
+}

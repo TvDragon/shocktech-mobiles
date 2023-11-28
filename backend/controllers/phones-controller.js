@@ -1,5 +1,17 @@
 const Phone = require('../models/phones');
 
+module.exports.getPhones = async function(req, res) {
+  const userId = req.query.userId;
+  if (userId) {
+    const phones = await Phone.getPhones();
+    if (phones.length == 0) {
+      return res.json({error: "Error getting phones"});
+    }
+    return res.json({phones: phones});
+  }
+  return res.json({error: "Not valid user Id"});
+}
+
 module.exports.getBestSellers = async function(req, res) {
   var results = await Phone.getBestSellers();
   if (results.length == 0) {

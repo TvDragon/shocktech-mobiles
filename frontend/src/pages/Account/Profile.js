@@ -78,7 +78,7 @@ function Profile() {
           <Link to="/productReviews"><button className="profile-options">MY PRODUCT REVIEWS</button></Link><br></br><br></br>
           <Link to="/changePassword"><button className="profile-options">CHANGE PASSWORD</button></Link><br></br><br></br>
           {user.admin !== undefined ? (
-            <div><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></div>
+            <Link to="/listings"><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></Link>
           ): <div></div>
           }
           <button className="profile-options">SIGN OUT</button>

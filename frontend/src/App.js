@@ -9,6 +9,7 @@ import Orders from "./pages/Account/Orders";
 import ProductReviews from "./pages/Account/ProductReviews";
 import ChangePassword from "./pages/Account/ChangePassword";
 import Cart from "./pages/Cart/Cart";
+import Listings from "./pages/Account/Listings";
 
 import {AuthConProvider} from './context/AuthContext';
 
@@ -28,6 +29,7 @@ function App() {
               <Route path="/orders" element={<Orders />} />
               <Route path="/changePassword" element={<ChangePassword />} />
               <Route path="/productReviews" element={<ProductReviews />} />
+              <Route path="/listings" element={<Listings />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="*" element={<ErrorState />} />
           </Routes>
