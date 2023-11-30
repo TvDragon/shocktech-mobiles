@@ -62,32 +62,36 @@ function ChangePassword() {
   return (
     <div className="content">
       <HeaderBar />
-      <div id="account-information">
-        <div id="left-tab">
-          <Link to="/profile"><button className="profile-options">ACCOUNT INFORMATION</button></Link><br></br><br></br>
-          <Link to="/orders"><button className="profile-options">MY ORDERS</button></Link><br></br><br></br>
-          <Link to="/productReviews"><button className="profile-options">MY PRODUCT REVIEWS</button></Link><br></br><br></br>
-          <button className="profile-options">CHANGE PASSWORD &#10148;</button><br></br><br></br>
-          {user.admin !== undefined ? (
-            <Link to="/listings"><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></Link>
-          ): <div></div>
-          }
-          <button className="profile-options">SIGN OUT</button>
-        </div>
-        <div id="account-info-tab">
-          <p id="p-heading">CHANGE PASSWORD</p>
-          <hr></hr><br></br>
-          <div id="personal-info">
-            <label>Current password</label><span className="asterik">*</span><br></br>
-            <input type="password" onChange={changeCurrPassword}></input><br></br><br></br>
-            <label>New password</label><span className="asterik">*</span><br></br>
-            <input type="password" onChange={changeNewPassword}></input><br></br><br></br>
-            <label>Confirm new password</label><span className="asterik">*</span><br></br>
-            <input type="password" onChange={changeConfirmNewPassword}></input><br></br><br></br>
-            <button className="shared-btn" onClick={() => {changePassword()}}>Save Profile</button>
+      {user ? (
+        <div id="account-information">
+          <div id="left-tab">
+            <Link to="/profile"><button className="profile-options">ACCOUNT INFORMATION</button></Link><br></br><br></br>
+            <Link to="/orders"><button className="profile-options">MY ORDERS</button></Link><br></br><br></br>
+            <Link to="/productReviews"><button className="profile-options">MY PRODUCT REVIEWS</button></Link><br></br><br></br>
+            <button className="profile-options">CHANGE PASSWORD &#10148;</button><br></br><br></br>
+            {user.admin !== undefined ? (
+              <Link to="/listings"><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></Link>
+            ): <div></div>
+            }
+            <button className="profile-options">SIGN OUT</button>
+          </div>
+          <div id="account-info-tab">
+            <p id="p-heading">CHANGE PASSWORD</p>
+            <hr></hr><br></br>
+            <div id="personal-info">
+              <label>Current password</label><span className="asterik">*</span><br></br>
+              <input type="password" onChange={changeCurrPassword}></input><br></br><br></br>
+              <label>New password</label><span className="asterik">*</span><br></br>
+              <input type="password" onChange={changeNewPassword}></input><br></br><br></br>
+              <label>Confirm new password</label><span className="asterik">*</span><br></br>
+              <input type="password" onChange={changeConfirmNewPassword}></input><br></br><br></br>
+              <button className="shared-btn" onClick={() => {changePassword()}}>Save Profile</button>
+            </div>
           </div>
         </div>
-      </div>
+      ): (
+        <div>Must be logged in</div>
+      )}
     </div>
   ); 
 }
