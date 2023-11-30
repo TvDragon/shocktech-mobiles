@@ -90,6 +90,7 @@ td.total {
 
 #listing-bar {
   display: flex;
+  justify-content: space-between;
 }
 
 .add-listing-btn {
