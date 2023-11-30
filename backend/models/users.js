@@ -18,11 +18,19 @@ const UserSchema = new Schema({
   password: {
     type: String,
     default: "One",
+  },
+  admin: {
+    type: Boolean,
+    default: false
   }
 }, { versionKey: false });
 
 UserSchema.statics.findUser = function(email) {
   return this.findOne({email: email});
+}
+
+UserSchema.statics.findUserById = function(userId) {
+  return this.findOne({_id: userId});
 }
 
 UserSchema.statics.updateProfile = async function(currEmail, newEmail, fname, lname) {

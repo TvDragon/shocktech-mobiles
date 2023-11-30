@@ -143,17 +143,45 @@ module.exports.getBrands = async function(req, res) {
 
 module.exports.updateListing = async function(req, res) {
   try {
+    const userId = req.body.userId;
     const uid = req.body.uid;
     const title = req.body.title;
     const brand = req.body.brand;
     const price = req.body.price;
     const stock = req.body.stock;
-    if (uid && title && brand && price && stock) {
-      await Phone.updateListing(uid, title, brand, price, stock);
-      return res.json({success: "Updated Listing"});
+    const user = await User.findUserById(userId);
+    if (user) {
+      if (user.admin) {
+        if (uid && title && brand && price && stock) {
+          await Phone.updateListing(uid, title, brand, price, stock);
+          return res.json({success: "Updated Listing"});
+        }
+        return res.json({error: "Missing data for a field"});
+      }
+      return res.json({error: "User does not have admin privileges"});
+    } else {
+      return res.json({error: "Not valid userId"});
     }
-    return res.json({error: "Missing data for a field"});
   } catch (err) {
     return res.json({error: "Error updating listing"});
+  }
+}
+
+module.exports.deleteListing = async function(req, res) {
+  try {
+    const userId = req.body.userId;
+    const uid = req.body.uid;
+    const user = await User.findUserById(userId);
+
+    if (user) {
+      if (user.admin) {
+        await Phone.deleteListing(uid);
+        return res.json({success: "Deleted listing"});
+      }
+      return res.json({error: "User does not have admin privileges"});
+    }
+    return res.json({error: "Not valid userId"});
+  } catch (err) {
+    return res.json({error: "Error deleting listing"});
   }
 }

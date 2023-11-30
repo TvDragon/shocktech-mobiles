@@ -52,4 +52,6 @@ router.get('/getBrands', phonesController.getBrands);
 
 router.post('/updateListing', phonesController.updateListing);
 
+router.post('/deleteListing', phonesController.deleteListing);
+
 module.exports = router;

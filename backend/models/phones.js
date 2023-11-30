@@ -279,6 +279,10 @@ PhoneSchema.statics.updateListing = async function(phoneUid, title, brand, price
   );
 }
 
+PhoneSchema.statics.deleteListing = async function(phoneUid) {
+  await this.deleteOne({uid: phoneUid});
+}
+
 // Create model for Phones
 const Phone = mongoose.model('Phone', PhoneSchema, "Phones");
 

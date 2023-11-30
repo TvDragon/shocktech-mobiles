@@ -79,6 +79,7 @@ function Listing() {
 
   function saveListing() {
     axios.post('/api/updateListing', {
+        userId: user._id,
         uid: phone.uid,
         title: title,
         price: price,

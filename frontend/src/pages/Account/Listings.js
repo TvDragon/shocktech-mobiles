@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import Popup from "reactjs-popup";
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import "../../css/global.css";
@@ -19,8 +20,9 @@ function Listings() {
   const navigate = useNavigate();
   const {user} = useContext(AuthContext);
   const [allPhones, setAllPhones] = useState([]);
+  const [displayDeletePopUp, setDisplayDeletePopUp] = useState(false);
 
-  useEffect(() => {
+  function getListings() {
     if (user) {
       axios.get('/api/phones', {
         params: {
@@ -38,10 +40,29 @@ function Listings() {
         })
         .catch((err) => console.log(err));
     }
+  }
+  useEffect(() => {
+    getListings();
   }, []);
 
-
-  
+  function deleteListing(uid) {
+    axios.post('/api/deleteListing', {userId: user._id, uid: uid})
+      .then((res) => {
+        if (res.data.error) {
+          MySwal.fire({
+            title: res.data.error,
+            icon: "error"
+          });
+        } else {
+          MySwal.fire({
+            title: `Delete Listing #${uid}`,
+            icon: "success"
+          });
+          getListings();
+        }
+      })
+      .catch((err) => console.log(err));
+  }
 
   return (
     <div className="content">
@@ -76,7 +97,24 @@ function Listings() {
                         <td>{phone.stock}</td>
                         <td>{phone.brand}</td>
                         <td><Link to={"/listing?uid=" + phone.uid}><img className="cell-icons" src={EditIcon}></img></Link></td>
-                        <td><Link><img className="cell-icons" src={BinIcon}></img></Link></td>
+                        <Popup trigger=
+                          {<td><img className="cell-icons" src={BinIcon}></img></td>} modal nested>
+                          {
+                            close => (
+                              <form method='post' action=''>
+                                <div className="review-form">
+                                  <button className="close" onClick={close}>&times;</button>
+                                  <p className="title-review center-text">Are you sure you wish to delete listing #{phone.uid}?</p>
+                                  <p className="center-text">Click yes to confirm otherwise no to cancel.</p>
+                                  <div className="center-buttons">
+                                    <button className="shared-btn" onClick={() => {deleteListing(phone.uid);close();}}>Yes</button>
+                                    <button className="shared-btn" onClick={() => {close();}}>No</button>
+                                  </div>
+                                </div>
+                              </form>
+                            )
+                          }
+                        </Popup>
                       </tr>
                     })
                   }

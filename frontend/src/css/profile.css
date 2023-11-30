@@ -157,3 +157,9 @@ tr.listings-row > * {
   font-size: 24px;
   color: #2b2c30;
 }
+
+.center-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
