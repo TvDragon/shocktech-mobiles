@@ -21,22 +21,27 @@ function Listings() {
   const [allPhones, setAllPhones] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/phones', {
-      params: {
-        userId: user._id}
-      })
-      .then((res) => {
-        if (res.data.phones) {
-          setAllPhones(res.data.phones);
-        } else {
-          MySwal.fire({
-            title: res.data.phones,
-            icon: "error"
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+    if (user) {
+      axios.get('/api/phones', {
+        params: {
+          userId: user._id}
+        })
+        .then((res) => {
+          if (res.data.phones) {
+            setAllPhones(res.data.phones);
+          } else {
+            MySwal.fire({
+              title: res.data.phones,
+              icon: "error"
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
+
+
+  
 
   return (
     <div className="content">
@@ -70,7 +75,7 @@ function Listings() {
                         <td>${phone.price}</td>
                         <td>{phone.stock}</td>
                         <td>{phone.brand}</td>
-                        <td><Link><img className="cell-icons" src={EditIcon}></img></Link></td>
+                        <td><Link to={"/listing?uid=" + phone.uid}><img className="cell-icons" src={EditIcon}></img></Link></td>
                         <td><Link><img className="cell-icons" src={BinIcon}></img></Link></td>
                       </tr>
                     })
@@ -83,7 +88,7 @@ function Listings() {
           )}
         </div>
       ): (
-        <div>Must be logged in</div>
+        <div>Must be logged in and have admin access</div>
       )}
     </div>
   ) 

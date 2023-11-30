@@ -1,4 +1,5 @@
 const Phone = require('../models/phones');
+const User = require("../models/users");
 
 module.exports.getPhones = async function(req, res) {
   const userId = req.query.userId;
@@ -123,5 +124,36 @@ module.exports.deleteReview = async function(req, res) {
     return res.json({success: "Delete Review"});
   } catch (err) {
     return res.json({error: "Error deleting review"});
+  }
+}
+
+module.exports.getBrands = async function(req, res) {
+  try {
+    const brands = await Phone.getBrands();
+
+    if (brands.length === 0) {
+      return res.json({error: "Couldn't get brands"});
+    }
+
+    return res.json({brands: brands});
+  } catch (err) {
+    return res.json({error: "Error getting brands"});
+  }
+}
+
+module.exports.updateListing = async function(req, res) {
+  try {
+    const uid = req.body.uid;
+    const title = req.body.title;
+    const brand = req.body.brand;
+    const price = req.body.price;
+    const stock = req.body.stock;
+    if (uid && title && brand && price && stock) {
+      await Phone.updateListing(uid, title, brand, price, stock);
+      return res.json({success: "Updated Listing"});
+    }
+    return res.json({error: "Missing data for a field"});
+  } catch (err) {
+    return res.json({error: "Error updating listing"});
   }
 }

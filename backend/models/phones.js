@@ -50,6 +50,10 @@ PhoneSchema.statics.getPhones = function() {
   return this.find({});
 }
 
+PhoneSchema.statics.getBrands = function() {
+  return this.distinct('brand');
+}
+
 PhoneSchema.statics.getBestSellers = function() {
   return this.aggregate([
     {$match: {$and: [
@@ -264,6 +268,14 @@ PhoneSchema.statics.orderPhone = async function(phoneUid, quantity) {
   await this.updateOne(
     {uid: phoneUid},
     {$set: {stock: newQuantity}}
+  );
+}
+
+PhoneSchema.statics.updateListing = async function(phoneUid, title, brand, price, stock) {
+  const imgPath = `/phone_default_images/${brand}.png`;
+  await this.updateOne(
+    {uid: phoneUid},
+    {$set: {title: title, brand: brand, price: price, stock: stock, image: imgPath}}
   );
 }
 

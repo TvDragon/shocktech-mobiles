@@ -48,4 +48,8 @@ router.get('/orders', ordersController.getOrders);
 
 router.get('/phones', phonesController.getPhones);
 
+router.get('/getBrands', phonesController.getBrands);
+
+router.post('/updateListing', phonesController.updateListing);
+
 module.exports = router;

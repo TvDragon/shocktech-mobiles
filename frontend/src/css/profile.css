@@ -40,7 +40,7 @@
   color: #2b2c30;
 }
 
-#personal-info > input {
+#personal-info > input, #product-listing-desc > input {
   background-color: #dcc3ac;
   border: 2px solid #efeee7;
 }
@@ -121,4 +121,39 @@ tr.listings-row > * {
 .cell-icons {
   width: 15%;
   height: 15%;
+}
+
+#listing {
+  width: 90%;
+  margin: auto;
+  background-color: #d9d9d8;
+  border-radius: 40px;
+  margin-top: 1%;
+}
+
+#product-listing {
+  display: flex;
+}
+
+#product-listing > * {
+  margin: 1%;
+}
+
+#product-listing-desc {
+  width: 75%;
+  padding: 1%;
+}
+
+#product-listing-desc > label {
+  color: #2b2c30;
+  font-family: 'PublicSans';
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+#product-listing-desc > input, #product-listing-desc > p, #brand-options {
+  font-family: "PublicSans";
+  font-size: 24px;
+  color: #2b2c30;
 }
