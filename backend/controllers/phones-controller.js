@@ -1,6 +1,9 @@
 const Phone = require('../models/phones');
 const User = require("../models/users");
 
+const min = 100000;
+const max = 1000000;
+
 module.exports.getPhones = async function(req, res) {
   const userId = req.query.userId;
   if (userId) {
@@ -183,5 +186,30 @@ module.exports.deleteListing = async function(req, res) {
     return res.json({error: "Not valid userId"});
   } catch (err) {
     return res.json({error: "Error deleting listing"});
+  }
+}
+
+module.exports.addListing = async function(req, res) {
+  try {
+    const userId = req.body.userId;
+    const title = req.body.title;
+    const brand = req.body.brand;
+    const price = req.body.price;
+    const stock = req.body.stock;
+    const user = await User.findUserById(userId);
+
+    if (user) {
+      if (user.admin) {
+        var uid = Math.floor(Math.random() * (max - min) + min + 1);
+        while ((await Phone.getPhone(uid)).length !== 0) {
+          uid = Math.floor(Math.random() * (max - min) + min + 1);
+        }
+        await Phone.addListing(title, brand, stock, price, uid);
+        return res.json({success: "Added Listing"});
+      }
+    }
+    return res.json({error: "Not valid userId"});
+  } catch (err) {
+    return res.json({error: "Error adding listing"});
   }
 }

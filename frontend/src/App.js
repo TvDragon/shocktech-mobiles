@@ -15,6 +15,7 @@ import Listing from "./pages/Account/Listing";
 import {AuthConProvider} from './context/AuthContext';
 
 import "./css/global.css";
+import AddListing from "./pages/Account/AddListing";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path="/productReviews" element={<ProductReviews />} />
               <Route path="/listings" element={<Listings />} />
               <Route path="/listing" element={<Listing />} />
+              <Route path="/addListing" element={<AddListing />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="*" element={<ErrorState />} />
           </Routes>

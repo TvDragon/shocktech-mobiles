@@ -32,10 +32,6 @@ const PhoneSchema = new Schema({
     type: Number,
     default: 5.00,
   },
-  numReviews: {
-    type: Number,
-    default: 100000,
-  },
   uid: {
     type: Number,
     default: 100000,
@@ -281,6 +277,22 @@ PhoneSchema.statics.updateListing = async function(phoneUid, title, brand, price
 
 PhoneSchema.statics.deleteListing = async function(phoneUid) {
   await this.deleteOne({uid: phoneUid});
+}
+
+PhoneSchema.statics.addListing = async function(title, brand, stock, price, uid) {
+  const imgPath = `/phone_default_images/${brand}.png`;
+  const newListing = new Phone({
+    title: title,
+    brand: brand,
+    stock: stock,
+    price: price,
+    image: imgPath,
+    reviews: [],
+    disabled: false,
+    avgRatings: 0,
+    uid: uid
+  });
+  newListing.save();
 }
 
 // Create model for Phones

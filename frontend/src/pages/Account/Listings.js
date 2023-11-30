@@ -73,7 +73,7 @@ function Listings() {
             <div id="">
               <div id="listing-bar">
                 <p id="p-heading"><button className="review-back-btn" onClick={() => {navigate(-1)}}>&laquo;</button> LISTINGS</p>
-                <button className="add-listing-btn">Add Listing</button>
+                <Link to="/addListing"><button className="add-listing-btn">Add Listing</button></Link>
               </div>
               <table id="table-listings">
                 <thead>

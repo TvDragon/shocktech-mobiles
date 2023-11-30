@@ -54,4 +54,6 @@ router.post('/updateListing', phonesController.updateListing);
 
 router.post('/deleteListing', phonesController.deleteListing);
 
+router.post('/addListing', phonesController.addListing);
+
 module.exports = router;
