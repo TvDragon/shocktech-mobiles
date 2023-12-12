@@ -1,13 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import "../../css/global.css";
 import "../../css/profile.css";
-import StarRating from "./StarRating";
-
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import AuthContext from "../../context/AuthContext";
-const MySwal = withReactContent(Swal);
 
 function FullOrder({order}) {
   const [phones, setPhones] = useState([]);

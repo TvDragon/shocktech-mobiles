@@ -10,7 +10,6 @@ import AuthContext from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
-import FullReview from "./FullReview";
 import FullOrder from "./FullOrder";
 
 const MySwal = withReactContent(Swal);

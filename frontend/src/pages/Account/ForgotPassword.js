@@ -1,11 +1,8 @@
-import { useEffect, useState, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 import axios from "axios";
 import "../../css/global.css";
 import "../../css/account-form.css";
 import HeaderBar from "../../components/HeaderBar";
-
-import AuthContext from "../../context/AuthContext";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";

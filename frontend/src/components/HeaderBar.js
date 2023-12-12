@@ -9,7 +9,7 @@ import AuthContext from "../context/AuthContext";
 
 function HeaderBar() {
 
-  const { user, updateUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [searchTitle, setSearchTitle] = useState("");
   const [showDefaultIcons, setShowDefaultIcons] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);

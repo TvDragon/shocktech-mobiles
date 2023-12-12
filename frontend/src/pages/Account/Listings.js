@@ -20,7 +20,6 @@ function Listings() {
   const navigate = useNavigate();
   const {user} = useContext(AuthContext);
   const [allPhones, setAllPhones] = useState([]);
-  const [displayDeletePopUp, setDisplayDeletePopUp] = useState(false);
 
   function getListings() {
     if (user) {

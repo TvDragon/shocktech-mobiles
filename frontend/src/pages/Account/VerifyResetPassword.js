@@ -1,11 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Link } from "react-router-dom";
 import "../../css/global.css";
 import "../../css/profile.css";
 import HeaderBar from "../../components/HeaderBar";
-
-import AuthContext from "../../context/AuthContext";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
