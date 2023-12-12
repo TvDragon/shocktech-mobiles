@@ -10,7 +10,7 @@ ShockTech Mobiles is an eCommerce web application listing mobile phones for sale
 * [![Node.js][Node.js]][Node-url]
 * [![Nodemon][Nodemon]][Nodemon-url]
 
-### Website for Project
+### Website showcasing Project
 
 [ShockTech Mobiles](http://34.229.139.57:3000/)
 
