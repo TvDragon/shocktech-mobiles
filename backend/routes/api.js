@@ -56,4 +56,8 @@ router.post('/deleteListing', phonesController.deleteListing);
 
 router.post('/addListing', phonesController.addListing);
 
+router.post('/resetPassword', usersController.resetPassword);
+
+router.post('/confirmResetPassword', usersController.confirmResetPassword);
+
 module.exports = router;

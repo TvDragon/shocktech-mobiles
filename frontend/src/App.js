@@ -4,6 +4,7 @@ import SearchState from "./pages/Search/SearchState";
 import ProductState from "./pages/Product/ProductState";
 import AccountForm from "./pages/Account/AccountForm";
 import ErrorState from "./pages/Error/ErrorState";
+import ForgotPassword from "./pages/Account/ForgotPassword";
 import Profile from "./pages/Account/Profile";
 import Orders from "./pages/Account/Orders";
 import ProductReviews from "./pages/Account/ProductReviews";
@@ -16,6 +17,7 @@ import {AuthConProvider} from './context/AuthContext';
 
 import "./css/global.css";
 import AddListing from "./pages/Account/AddListing";
+import VerifyResetPassword from "./pages/Account/VerifyResetPassword";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
               <Route path="/product" element={<ProductState />} />
               <Route path="/account" element={<AccountForm />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/forgotPassword" element={<ForgotPassword />}/>
+              <Route path="/verifyResetPassword" element={<VerifyResetPassword />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/changePassword" element={<ChangePassword />} />
               <Route path="/productReviews" element={<ProductReviews />} />

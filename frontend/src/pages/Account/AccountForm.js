@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../../css/global.css";
 import "../../css/account-form.css";
@@ -138,7 +139,7 @@ function AccountForm() {
                   <button className="shared-btn" onClick={() => {signIn()}}>Sign In</button>
                 </div>
                 <div className="center-container">
-                  <button className="text-btn ps-fs-20"><u>Forgot your password?</u></button>
+                  <Link to="/forgotPassword"><button className="text-btn ps-fs-20"><u>Forgot your password?</u></button></Link>
                 </div>
             </div>
           ):

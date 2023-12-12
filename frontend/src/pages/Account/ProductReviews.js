@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import "../../css/global.css";
 import "../../css/profile.css";
@@ -14,7 +15,8 @@ import FullReview from "./FullReview";
 const MySwal = withReactContent(Swal);
 
 function ProductReviews() {
-  const {user} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const {user, updateUser} = useContext(AuthContext);
   const [results, setResults] = useState([]);
   const [phoneId, setPhoneId] = useState(0);
   const [title, setTitle] = useState("");
@@ -49,6 +51,27 @@ function ProductReviews() {
     setComment(userComment);
     setViewReview(true)
   }
+  
+  function signout() {
+    MySwal.fire({
+      title: 'Are you sure you want to logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Logout'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("auth-token");
+
+        updateUser(null);
+        navigate('/');
+
+        MySwal.fire({
+          title: 'Logout Successful',
+          icon: 'success'}
+        )
+      }
+    })
+  }
 
   return (
     <div className="content">
@@ -60,11 +83,11 @@ function ProductReviews() {
             <Link to="/orders"><button className="profile-options">MY ORDERS</button></Link><br></br><br></br>
             <button className="profile-options">MY PRODUCT REVIEWS &#10148;</button><br></br><br></br>
             <Link to="/changePassword"><button className="profile-options">CHANGE PASSWORD</button></Link><br></br><br></br>
-            {user.admin !== undefined ? (
+            {user.admin ? (
               <Link to="/listings"><button className="profile-options">MANAGE LISTINGS</button><br></br><br></br></Link>
             ): <div></div>
             }
-            <button className="profile-options">SIGN OUT</button>
+            <button className="profile-options" onClick={() => {signout()}}>SIGN OUT</button>
           </div>
           {viewReview ? (
             <div id="account-info-tab">

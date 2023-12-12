@@ -1,8 +1,22 @@
 const User = require("../models/users");
+const ResetPassword = require("../models/resetPassword");
 const bcrypt = require('bcryptjs');
+const ip = require('ip');
+const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config({path: __dirname + '/../.env' }); // Used to fetch constant variables from the .env file
+
+function generateId(length) {
+  let id = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let counter = 0;
+  while (counter < length) {
+    id += characters.charAt(Math.floor(Math.random() * characters.length));
+    counter += 1;
+  }
+  return id;
+}
 
 module.exports.register = async function(req, res) {
 
@@ -150,5 +164,80 @@ module.exports.changePassword = async function(req, res) {
     return res.json({error: "Password does not match"});
   } catch {
     return res.json({error: "Error changing password"});
+  }
+}
+
+module.exports.resetPassword = async function(req, res) {
+  if (req.body.email) {
+
+    const user = await User.findUser(req.body.email);
+
+    if (!user) {
+      return res.json({error: "User Not Found."});
+    }
+
+    let code = '';
+    while (true) {
+      code = generateId(16);
+      const resetPass = await ResetPassword.findOne({resetPasswordCode: code});
+      if(!resetPass) break;
+    }
+
+    const newResetPass = await new ResetPassword({
+      userID: user._id,
+      resetPasswordCode: code,
+    });
+
+    newResetPass.save();
+
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.NODE_EMAIL,
+        pass: process.env.NODE_PASSWORD,
+      },
+    });
+
+    let info = await transporter.sendMail({
+      from: "Shocktech Mobiles",
+      to: req.body.email,
+      subject: "Reset Password",
+      text: "Reset Password",
+      html: "Reset Password Link: " + ip.address() + ":3000/verifyResetPassword?code=" + code,
+    });
+
+    return res.json({msg: "Reset Password Link Sent. Please Check Email!"});
+  } else {
+    return res.json({error: "Empty Field"});
+  }
+}
+
+module.exports.confirmResetPassword = async function(req, res) {
+  if (req.body.verificationCode && req.body.newPassword) {
+
+    const resetPassObj = await ResetPassword.findOne({resetPasswordCode: req.body.verificationCode});
+    if (!resetPassObj) {
+      return res.json({error: "Reset for user not found"});
+    }
+
+    const salt = await bcrypt.genSalt();
+
+    const hashedPass = await bcrypt.hash(req.body.newPassword, salt);
+
+    const userId = resetPassObj.userID;
+    const user = await User.findOneAndUpdate(
+      {_id: userId},
+      {password: hashedPass}
+      );
+
+    if (!user) {
+      return res.json({error: "User not found"});
+    }
+
+    await ResetPassword.findOneAndDelete({resetPasswordCode: req.body.verificationCode});
+
+    return res.json({success: "Reset Password"});
+  } else {
+    return res.json({error: "No Code"});
   }
 }

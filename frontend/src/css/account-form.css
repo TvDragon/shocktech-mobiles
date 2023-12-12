@@ -1,4 +1,4 @@
-#account-form {
+#account-form, #reset-pass-form {
   width: 80%;
   background-color: #d9d9d8;
   margin: auto;
@@ -35,7 +35,7 @@
 #account-form {
   margin-left: 1%;
   margin: auto;
-  width: 60%;
+  /* width: 60%; */
 }
 
 #account-form > label, #account-form > input, .asterik {
@@ -52,4 +52,20 @@
 
 .asterik {
   color: red;
+}
+
+#reset-pass-form > * {
+  margin: auto;
+}
+
+#reset-pass-title {
+  text-align: center;
+  font-family: "PlayfairDisplay";
+  font-size: 30px;
+}
+
+#reset-pass-info {
+  text-align: center;
+  font-family: "PublicSans";
+  font-size: 24px;
 }
