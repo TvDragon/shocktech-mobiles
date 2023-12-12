@@ -1,7 +1,6 @@
 const User = require("../models/users");
 const ResetPassword = require("../models/resetPassword");
 const bcrypt = require('bcryptjs');
-const ip = require('ip');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 
@@ -203,7 +202,7 @@ module.exports.resetPassword = async function(req, res) {
       to: req.body.email,
       subject: "Reset Password",
       text: "Reset Password",
-      html: "Reset Password Link: " + ip.address() + ":3000/verifyResetPassword?code=" + code,
+      html: "Reset Password Link: " + process.env.PUBLIC_IP_ADDR + ":3000/verifyResetPassword?code=" + code,
     });
 
     return res.json({msg: "Reset Password Link Sent. Please Check Email!"});
