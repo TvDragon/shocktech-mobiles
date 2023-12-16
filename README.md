@@ -1,6 +1,6 @@
 <h1 align="center">ShockTech Mobiles</h1>
 
-ShockTech Mobiles is an eCommerce web application listing mobile phones for sale following the SPA principle.
+ShockTech Mobiles is an eCommerce web application listing mobile phones for sale built as a Single-Page Application.
 
 ### Build With
 
