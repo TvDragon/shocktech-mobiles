@@ -50,7 +50,7 @@ PhoneSchema.statics.getBrands = function() {
   return this.distinct('brand');
 }
 
-const commonPhoneDataPipeline = [
+const convertReviewsToUsersPipline = [
   {
     $unwind: {
       path: "$reviews",
@@ -72,6 +72,9 @@ const commonPhoneDataPipeline = [
       as: "reviews.reviewerObj"
     }
   },
+];
+
+const groupPhoneDataPipeline = [
   {
     $group: {
       _id: "$_id",
@@ -97,7 +100,8 @@ PhoneSchema.statics.getBestSellers = function() {
     ]}},
     {$sort: {avgRatings: -1}},
     {$limit: 5},
-    ...commonPhoneDataPipeline
+    ...convertReviewsToUsersPipline,
+    ...groupPhoneDataPipeline
   ]);
 }
 
@@ -109,7 +113,8 @@ PhoneSchema.statics.getSoldOutSoon = function() {
     ]}},
     {$sort: {stock: 1}},
     {$limit: 5},
-    ...commonPhoneDataPipeline
+    ...convertReviewsToUsersPipline,
+    ...groupPhoneDataPipeline
   ]);
 }
 
@@ -196,7 +201,8 @@ PhoneSchema.statics.getPhone = async function(uid) {
     {$match: {$and: [
       {uid: uid}
     ]}},
-    ...commonPhoneDataPipeline
+    ...convertReviewsToUsersPipline,
+    ...groupPhoneDataPipeline
   ])
 }
 
