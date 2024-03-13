@@ -50,6 +50,44 @@ PhoneSchema.statics.getBrands = function() {
   return this.distinct('brand');
 }
 
+const commonPhoneDataPipeline = [
+  {
+    $unwind: {
+      path: "$reviews",
+      preserveNullAndEmptyArrays: true // Unwind null and empty values(array)
+    }
+  },
+  {
+    $addFields: {
+      "reviews.reviewerObj": {
+        $toObjectId: "$reviews.reviewer" // Create new field named "reviews.reviewerOBj" containing "reviews.reviewer" as ObjectId
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "Users",
+      localField: "reviews.reviewerObj",
+      foreignField: "_id",
+      as: "reviews.reviewerObj"
+    }
+  },
+  {
+    $group: {
+      _id: "$_id",
+      title: { $first: "$title" }, // Take the first value of field
+      brand: { $first: "$brand" },
+      image: { $first: "$image" },
+      stock: { $first: "$stock" },
+      price: { $first: "$price" },
+      disabled: { $first: "$disabled" },
+      uid: { $first: "$uid" },
+      avgRatings: { $first: "$avgRatings" },
+      reviews: { $push: "$reviews" } // Push all reviews back into an array
+    }
+  }
+];
+
 PhoneSchema.statics.getBestSellers = function() {
   return this.aggregate([
     {$match: {$and: [
@@ -58,7 +96,8 @@ PhoneSchema.statics.getBestSellers = function() {
       {"reviews.1": {$exists: true}}  // Array length reviews at least size 2
     ]}},
     {$sort: {avgRatings: -1}},
-    {$limit: 5}
+    {$limit: 5},
+    ...commonPhoneDataPipeline
   ]);
 }
 
@@ -69,7 +108,8 @@ PhoneSchema.statics.getSoldOutSoon = function() {
       {disabled: false}
     ]}},
     {$sort: {stock: 1}},
-    {$limit: 5}
+    {$limit: 5},
+    ...commonPhoneDataPipeline
   ]);
 }
 
@@ -156,33 +196,7 @@ PhoneSchema.statics.getPhone = async function(uid) {
     {$match: {$and: [
       {uid: uid}
     ]}},
-    {$unwind: {
-      path: "$reviews",
-      preserveNullAndEmptyArrays: true  // Unwind null and empty values(array)
-    }},
-    {$addFields: {
-      "reviews.reviewerObj": {
-        $toObjectId: "$reviews.reviewer", // Create new field named "reviews.reviewerOBj" containing "reviews.reviewer" as ObjectId
-      }
-    }},
-    {$lookup: {
-      from: "Users",
-      localField: "reviews.reviewerObj",
-      foreignField: "_id",
-      as: "reviews.reviewerObj"
-    }},
-    {$group: {
-      _id: "$_id",
-      title: { $first: "$title" },  // Take the first value of field
-      brand: { $first: "$brand" },
-      image: { $first: "$image" },
-      stock: { $first: "$stock" },
-      price: { $first: "$price"},
-      disabled: { $first: "$disabled"},
-      uid: { $first: "$uid"},
-      avgRatings: { $first: "$avgRatings"},
-      reviews: { $push: "$reviews" } // Push all reviews back into an array
-    }}
+    ...commonPhoneDataPipeline
   ])
 }
 
