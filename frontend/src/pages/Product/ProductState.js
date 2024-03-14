@@ -19,7 +19,6 @@ const MySwal = withReactContent(Swal);
 function ProductState() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const { phoneData } = location.state;
   const uid = queryParams.get('uid');
   const [phone, setPhone] = useState([]);
   const [quantity, setQuantity] = useState(0);
@@ -36,8 +35,9 @@ function ProductState() {
         setIsAdmin(user.admin);
       }
     }
-    if (phoneData) {
-      setPhone(phoneData)
+    if (location.state) {
+      const {phoneData} = location.state;
+      setPhone(phoneData);
     } else if (uid) {
       const interval = setInterval(() => {
         axios

@@ -72,9 +72,6 @@ const convertReviewsToUsersPipline = [
       as: "reviews.reviewerObj"
     }
   },
-];
-
-const groupPhoneDataPipeline = [
   {
     $group: {
       _id: "$_id",
@@ -101,7 +98,6 @@ PhoneSchema.statics.getBestSellers = function() {
     {$sort: {avgRatings: -1}},
     {$limit: 5},
     ...convertReviewsToUsersPipline,
-    ...groupPhoneDataPipeline
   ]);
 }
 
@@ -114,7 +110,6 @@ PhoneSchema.statics.getSoldOutSoon = function() {
     {$sort: {stock: 1}},
     {$limit: 5},
     ...convertReviewsToUsersPipline,
-    ...groupPhoneDataPipeline
   ]);
 }
 
@@ -130,6 +125,7 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, sortBy) {
           { stock: { $gt: 0 } }
         ]
       }},
+      ...convertReviewsToUsersPipline,
       {$group: {
         _id: null,
         phones: { $push: "$$ROOT" },
@@ -149,6 +145,7 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, sortBy) {
         {disabled: false},
         {stock: {$gt: 0}}
       ]}},
+      ...convertReviewsToUsersPipline,
       {$group: {
         _id: null,
         phones: {$push: "$$ROOT"},
@@ -202,7 +199,6 @@ PhoneSchema.statics.getPhone = async function(uid) {
       {uid: uid}
     ]}},
     ...convertReviewsToUsersPipline,
-    ...groupPhoneDataPipeline
   ])
 }
 
