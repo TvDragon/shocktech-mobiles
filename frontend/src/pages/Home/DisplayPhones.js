@@ -1,12 +1,49 @@
+import { useContext } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom"
 import '../../css/global.css';
 import '../../css/home-state.css';
 import ShoppingCartIcon from "../../assets/shopping-cart.png";
 
+import AuthContext from "../../context/AuthContext";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
+
 function DisplayPhones({ phones }) {
+  const { user } = useContext(AuthContext);
 
   function addToCart(phoneUID) {
-    console.log(phoneUID);
+    if (user) {
+      axios
+        .post("/api/addToCart", {userId: user._id, uid: phoneUID, quantity: 1})
+        .then((res) => {
+          if (res.data.success) {
+            MySwal.fire({
+              title: "Added To Cart",
+              icon: "success"
+            });
+          } else if (res.data.error) {
+            MySwal.fire({
+              title: res.data.error,
+              icon: "error"
+            });
+          } else {
+            MySwal.fire({
+              title: "Cannot add item to cart",
+            icon: "error"
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+    } else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
   }
 
   return (

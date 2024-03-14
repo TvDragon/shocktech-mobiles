@@ -44,7 +44,7 @@ function Cart() {
             .catch((err) => console.log(err));
           }
           setPhones(retrievedPhones);
-          setTotal(currTotal);
+          setTotal(currTotal.toFixed(2));
         })
         .catch((err) => console.log(err));
     }
