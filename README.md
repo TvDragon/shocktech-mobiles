@@ -12,7 +12,7 @@ ShockTech Mobiles is an eCommerce web application listing mobile phones for sale
 
 ### Website showcasing Project
 
-[ShockTech Mobiles](http://3.92.75.101:3000/)
+[ShockTech Mobiles](http://35.153.70.45:3000/)
 
 ### Features
 
