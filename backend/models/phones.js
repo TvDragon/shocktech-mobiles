@@ -82,6 +82,8 @@ const convertReviewsToUsersPipline = [
       price: { $first: "$price" },
       disabled: { $first: "$disabled" },
       uid: { $first: "$uid" },
+      seller: {$first: "$seller"},
+      condition: {$first: "$condition"},
       avgRatings: { $first: "$avgRatings" },
       reviews: { $push: "$reviews" } // Push all reviews back into an array
     }
@@ -113,27 +115,36 @@ PhoneSchema.statics.getSoldOutSoon = function() {
   ]);
 }
 
-PhoneSchema.statics.searchTitle = async function(searchTitle, brands, sortBy) {
+PhoneSchema.statics.searchTitle = async function(searchTitle, brands, conditions, sortBy) {
   var results = null;
   var basePipeline = null;
-  if (brands == undefined) {
+
+  if (brands != undefined && conditions != undefined) {
+    if (typeof brands == 'string') {
+      brands = [brands];
+    }
+
+    if (typeof conditions === 'string') {
+      conditions = [conditions];
+    }
+    
     basePipeline = [
-      {$match: {
-        $and: [
-          { title: { $regex: searchTitle, $options: 'i' } },
-          { disabled: false },
-          { stock: { $gt: 0 } }
-        ]
-      }},
+      {$match: {$and: [
+        {title: {$regex: searchTitle, $options: 'i'}},
+        {brand: {$in: brands}},
+        {condition: {$in: conditions}},
+        {disabled: false},
+        {stock: {$gt: 0}}
+      ]}},
       ...convertReviewsToUsersPipline,
       {$group: {
         _id: null,
-        phones: { $push: "$$ROOT" },
-        minPrice: { $min: "$price" },
-        maxPrice: { $max: "$price" }
+        phones: {$push: "$$ROOT"},
+        minPrice: {$min: "$price"},
+        maxPrice: {$max: "$price"},
       }}
     ];
-  } else {
+  } else if (brands != undefined) {
     if (typeof brands === 'string') {
       brands = [brands];
     }
@@ -151,6 +162,42 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, sortBy) {
         phones: {$push: "$$ROOT"},
         minPrice: {$min: "$price"},
         maxPrice: {$max: "$price"},
+      }}
+    ];
+  } else if (conditions != undefined) {
+    if (typeof conditions === 'string') {
+      conditions = [conditions];
+    }
+    basePipeline = [
+      {$match: {$and: [
+        {title: {$regex: searchTitle, $options: 'i'}},
+        {condition: {$in: conditions}},
+        {disabled: false},
+        {stock: {$gt: 0}}
+      ]}},
+      ...convertReviewsToUsersPipline,
+      {$group: {
+        _id: null,
+        phones: {$push: "$$ROOT"},
+        minPrice: {$min: "$price"},
+        maxPrice: {$max: "$price"},
+      }}
+    ];
+  } else {
+    basePipeline = [
+      {$match: {
+        $and: [
+          { title: { $regex: searchTitle, $options: 'i' } },
+          { disabled: false },
+          { stock: { $gt: 0 } }
+        ]
+      }},
+      ...convertReviewsToUsersPipline,
+      {$group: {
+        _id: null,
+        phones: { $push: "$$ROOT" },
+        minPrice: { $min: "$price" },
+        maxPrice: { $max: "$price" }
       }}
     ];
   }
@@ -184,12 +231,17 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, sortBy) {
   for (var i = 0; i < brandsLen; i++) {
     brands[i] = [brands[i], false];
   }
+  var conditions = await this.distinct('condition');
+  const conditionsLen = conditions.length;
+  for (var i = 0; i < conditionsLen; i++) {
+    conditions[i] = [conditions[i], false];
+  }
   
   if (!(results.length)) {
     return [];
   }
-  
-  return {phones: results[0]["phones"], brands: brands,
+
+  return {phones: results[0]["phones"], brands: brands, conditions: conditions,
           minPrice: results[0]["minprice"], maxPrice: results[0]["maxPrice"]};
 }
 

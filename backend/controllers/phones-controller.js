@@ -36,8 +36,9 @@ module.exports.searchTitle = async function(req, res) {
   if (req.query.searchTitle) {
     var searchTitle = req.query.searchTitle;
     var brands = req.query.brand;
+    var conditions = req.query.condition;
     var sortBy = req.query.sortBy;
-    var results = await Phone.searchTitle(searchTitle, brands, sortBy);
+    var results = await Phone.searchTitle(searchTitle, brands, conditions, sortBy);
     if (results.length == 0) {
       return res.json({error: "No phone title matches search."});
     }
