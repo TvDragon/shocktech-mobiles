@@ -202,27 +202,38 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, conditions
     ];
   }
 
-  var sortPipeline = [];
+  var sortByPipeline = {}
 
   switch (sortBy) {
     case "Price: Low - High":
-      sortPipeline = [{ $sort: { price: 1 } }];
+      sortByPipeline = { price: 1 }
       break;
     case "Price: High - Low":
-      sortPipeline = [{ $sort: { price: -1 } }];
+      sortByPipeline = { price: -1 };
       break;
-    case "Popularity":
-      sortPipeline = [{ $sort: { avgRatings: -1}}];
-      break;
+    case "Polularity":
+      sortByPipeline = { avgRatings: -1};
+      break
     case "Relevancy":
     case undefined:
     default:
       // No sort operation for relevancy or if sortBy is undefined
+      sortByPipeline = { stock: -1};
       break;
   }
-
   // Combine the base pipeline with the sort pipeline (if any)
-  const finalPipeline = [...sortPipeline, ...basePipeline];
+  const finalPipeline = [...basePipeline, 
+    {
+      $addFields: {
+        phones: {
+          $sortArray: {
+            input: "$phones",
+            sortBy: sortByPipeline
+          }
+        }
+      }
+    }
+  ];
 
   results = await this.aggregate(finalPipeline);
 
