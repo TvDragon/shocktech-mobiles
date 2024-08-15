@@ -6,6 +6,7 @@ import "../../css/global.css";
 import "../../css/search-state.css";
 import DisplayPhones from "../Home/DisplayPhones";
 import DisplayBrands from "./DisplayBrands";
+import DisplayConditions from "./DisplayConditions";
 
 function SearchState() {
   const location = useLocation();
@@ -16,6 +17,8 @@ function SearchState() {
   const [brandNames, setBrandNames] = useState([]);
   const [tickedBrands, setTickedBrands] = useState([]);
   const [displayBrandNames, setDisplayBrandsNames] = useState([]);
+  const [tickedConditions, setTickedConditions] = useState([]);
+  const [displayConditions, setDisplayConditions] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
   const [isBrandDropdownVisible, setIsBrandDropdownVisible] = useState(false);
@@ -33,6 +36,7 @@ function SearchState() {
         setShowResults(res.data.phones);
         setBrandNames(res.data.brands);
         setDisplayBrandsNames(res.data.brands);
+        setDisplayConditions(res.data.conditions);
         setMaxPrice(res.data.maxPrice !== null &&
                     res.data.maxPrice !== undefined ? res.data.maxPrice : 0);
       })
@@ -45,12 +49,31 @@ function SearchState() {
     setMinPrice(Number(minPrice));
     setMaxPrice(Number(maxPrice));
     const selectedBrandsLen = tickedBrands.length;
+    const selectedConditionsLen = tickedConditions.length;
     for (var i = 0; i < resultsLen; i++) {
       if (results[i].price <= maxPrice && results[i].price >= minPrice) {
-        if (selectedBrandsLen !== 0) {
-          for (var j = 0; j < selectedBrandsLen; j++) {
+        if (selectedBrandsLen !== 0 && selectedConditionsLen !== 0) {
+          for (let j = 0; j < selectedBrandsLen; j++) {
+            if (results[i].brand === tickedBrands[j] && (displayResults.indexOf(results[i]) < 0)) { // Don't add if already found in array
+              displayResults.push(results[i]);
+            }
+          }
+
+          for (let j = 0; j < selectedConditionsLen; j++) {
+            if (results[i].condition === tickedConditions[j] && (displayResults.indexOf(results[i]) < 0)) {
+              displayResults.push(results[i])
+            }
+          }
+        } else if (selectedBrandsLen !== 0) {
+          for (let j = 0; j < selectedBrandsLen; j++) {
             if (results[i].brand === tickedBrands[j]) {
               displayResults.push(results[i]);
+            }
+          }
+        } else if (selectedConditionsLen !== 0) {
+          for (let j = 0; j < selectedConditionsLen; j++) {
+            if (results[i].condition === tickedConditions[j]) {
+              displayResults.push(results[i])
             }
           }
         } else {
@@ -61,11 +84,15 @@ function SearchState() {
     setShowResults(displayResults);
   }
 
-  function updateSelectedBrands(selectedBrands) {
+  function updateFilter(selectedBrands, selectedConditions) {
     setTickedBrands(selectedBrands);
+    setTickedConditions(selectedConditions);
     var route = `/api/search?searchTitle=${searchTitle}`;
-    for (var i = 0; i < selectedBrands.length; i++) {
+    for (let i = 0; i < selectedBrands.length; i++) {
       route += `&brand=${selectedBrands[i]}`;
+    }
+    for (let i = 0; i < selectedConditions.length; i++) {
+      route += `&condition=${selectedConditions[i]}`;
     }
     axios
       .get(route)
@@ -78,7 +105,7 @@ function SearchState() {
       })
       .catch((err) => console.log(err));
   }
-  
+   
   const brandNameChange = (e) => {
     var brand = e.target.value;
     if (brand === '') {
@@ -116,8 +143,11 @@ function SearchState() {
   function sortBy(e) {
     const sortByValue = e.target.value;
     var route = `/api/search?searchTitle=${searchTitle}&sortBy=${sortByValue}`;
-    for (var i = 0; i < tickedBrands.length; i++) {
+    for (let i = 0; i < tickedBrands.length; i++) {
       route += `&brand=${tickedBrands[i]}`;
+    }
+    for (let i = 0; i < tickedConditions.length; i++) {
+      route += `&condition=${tickedConditions[i]}`;
     }
     axios
       .get(route)
@@ -142,7 +172,7 @@ function SearchState() {
               <div className="brandBar">
                 <input id="brandBar" name="search" type="text" placeholder="Search..." onChange={brandNameChange}></input>
               </div>
-              <DisplayBrands brands={displayBrandNames} searchTitle={searchTitle} updateSelectedBrands={updateSelectedBrands}/>
+              <DisplayBrands brands={displayBrandNames} selectedConditions={tickedConditions} updateFilter={updateFilter}/>
             </div> : <div></div>
           }
         </div>
@@ -165,7 +195,7 @@ function SearchState() {
             <div className="brandBar">
               <input id="brandBar" name="search" type="text" placeholder="Search..." onChange={brandNameChange}></input>
             </div>
-            <DisplayBrands brands={displayBrandNames} searchTitle={searchTitle} updateSelectedBrands={updateSelectedBrands}/>
+            <DisplayBrands brands={displayBrandNames} selectedConditions={tickedConditions} updateFilter={updateFilter}/>
           </div>
           <div className="filter-by-price">
             <p id="price-filter-title">Price</p>
@@ -175,6 +205,10 @@ function SearchState() {
               <input className="price-input" value={maxPrice} onChange={maxPriceChange}></input>
               <button id="searchBtn" type="submit" onClick={setPriceLimit}><p id="go">GO</p></button>
             </div>
+          </div>
+          <div className="filter-by-condition">
+            <p id="condition-filter-title">Condition</p>
+            <DisplayConditions conditions={displayConditions} selectedBrands={tickedBrands} updateFilter={updateFilter} />
           </div>
         </div>
         <div className="component-two">

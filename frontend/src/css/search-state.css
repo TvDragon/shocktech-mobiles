@@ -52,13 +52,13 @@
 	text-align: center;
 }
 
-.filter-by-brand, .filter-by-price {
+.filter-by-brand, .filter-by-price, .filter-by-condition {
 	margin: 3%;
 	background-color: #d9d9d8;
 	border-radius: 20px;
 }
 
-#brand-filter-title, #price-filter-title {
+#brand-filter-title, #price-filter-title, #condition-filter-title {
 	font-family: 'PlayfairDisplay';
 	font-size: 22px;
 	color: #2b2c30;
@@ -68,19 +68,19 @@
 	display: flex;
 }
 
-.brands {
+.brands, .conditions {
 	margin: 1% 0;
 }
 
-.brand-option {
+.brand-option, .condition-option {
 	display: flex;
 }
 
-.brand-input {
+.brand-input, .condition-input {
 	margin-right: 1%;
 }
 
-.brand-name {
+.brand-name, .condition-name {
 	font-family: 'PublicSans';
 	font-size: 15px;
 	color:#2b2c30;

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import "../../css/search-state.css";
 
-function DisplayBrands({ brands, searchTitle, updateSelectedBrands }) {
+function DisplayBrands({ brands, selectedConditions, updateFilter }) {
   const [selectedBrands, setSelectedBrands] = useState([]);
 
   useEffect(() => {
-    updateSelectedBrands(selectedBrands);
+    updateFilter(selectedBrands, selectedConditions);
   }, [selectedBrands]);
 
   const handleCheckboxChange = (e, brand) => {
@@ -22,7 +22,7 @@ function DisplayBrands({ brands, searchTitle, updateSelectedBrands }) {
         brands.map((brand) => {
           return (
             <div key={brand[0]} className="brand-option">
-              <input className="brand-input" type="checkbox" value={brand[0]} id={brand[0]} onChange={(e) => handleCheckboxChange(e, brand[0])}></input>
+              <input className="brand-input" type="checkbox" id={brand[0]} onChange={(e) => handleCheckboxChange(e, brand[0])}></input>
               <p className="brand-name">{brand[0]}</p>
             </div>
           );
