@@ -213,7 +213,13 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, conditions
       break;
     case "Polularity":
       sortByPipeline = { avgRatings: -1};
-      break
+      break;
+    case "Title: A - Z":
+      sortByPipeline = { title: 1};
+      break;
+    case "Title: Z - A":
+      sortByPipeline = { title: -1};
+      break;
     case "Relevancy":
     case undefined:
     default:

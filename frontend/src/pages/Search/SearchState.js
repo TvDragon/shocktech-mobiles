@@ -14,6 +14,7 @@ function SearchState() {
   const searchTitle = queryParams.get('searchTitle');
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState([]);
+  const [sortByValue, setSortByValue] = useState("Relevancy");
   const [brandNames, setBrandNames] = useState([]);
   const [tickedBrands, setTickedBrands] = useState([]);
   const [displayBrandNames, setDisplayBrandsNames] = useState([]);
@@ -87,7 +88,7 @@ function SearchState() {
   function updateFilter(selectedBrands, selectedConditions) {
     setTickedBrands(selectedBrands);
     setTickedConditions(selectedConditions);
-    var route = `/api/search?searchTitle=${searchTitle}`;
+    var route = `/api/search?searchTitle=${searchTitle}&sortBy=${sortByValue}`;
     for (let i = 0; i < selectedBrands.length; i++) {
       route += `&brand=${selectedBrands[i]}`;
     }
@@ -142,6 +143,7 @@ function SearchState() {
 
   function sortBy(e) {
     const sortByValue = e.target.value;
+    setSortByValue(e.target.value);
     var route = `/api/search?searchTitle=${searchTitle}&sortBy=${sortByValue}`;
     for (let i = 0; i < tickedBrands.length; i++) {
       route += `&brand=${tickedBrands[i]}`;
@@ -220,6 +222,8 @@ function SearchState() {
                 <option value="Price: Low - High">Price: Low - High</option>
                 <option value="Price: High - Low">Price: High - Low</option>
                 <option value="Popularity">Popularity</option>
+                <option value="Title: A - Z">Title: A - Z</option>
+                <option value="Title: Z - A">Title: Z - A</option>
               </select>
             </div>
           </div>
