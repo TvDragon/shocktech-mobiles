@@ -41,7 +41,8 @@ function ForgotPassword() {
         <p id="reset-pass-title">RESET YOUR PASSWORD</p>
         <p id="reset-pass-info">Enter your user account's verified email address and we will send you a password reset link.</p>
         <div id="forms">
-          <div id="account-form">
+          <div id="reset-pass-block">
+            <label>Email</label><span className="asterik">*</span><br></br>
             <input type="email" onChange={changeEmail}></input><br></br><br></br>
             <div className="center-container">
               <button className="shared-btn" onClick={() => {resetEmailLink()}}>Sent password reset email</button>

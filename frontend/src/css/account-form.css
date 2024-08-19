@@ -1,9 +1,20 @@
 #account-form, #reset-pass-form {
-  width: 80%;
-  background-color: #d9d9d8;
+  width: 70%;
   margin: auto;
   margin-top: 1%;
   border-radius: 15px;
+}
+
+#reset-pass-form {
+  width: 50%;
+}
+
+#reset-pass-form > * {
+  padding: 1% 0px;
+}
+
+#account-form {
+  background-color: #d9d9d8;
 }
 
 .header-account-form, #forms {
@@ -38,13 +49,20 @@
   /* width: 60%; */
 }
 
-#account-form > label, #account-form > input, .asterik {
+#reset-pass-block {
+  width: 100%;
+  margin: auto;
+  margin-top: 1%;
+  border-radius: 15px;
+}
+
+#account-form > label, #account-form > input, #reset-pass-block > label, #reset-pass-block > input, .asterik {
   font-family: "PublicSans";
   font-size: 24px;
   color: #2b2c30;
 }
 
-#account-form > input {
+#account-form > input, #reset-pass-block > input {
   width: 100%;
   background-color: #dcc3ac;
   border: 2px solid #efeee7;

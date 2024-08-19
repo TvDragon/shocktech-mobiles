@@ -20,6 +20,7 @@ function AccountForm() {
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const {updateUser} = useContext(AuthContext);
 
   function displayLoginForm() {
@@ -67,9 +68,14 @@ function AccountForm() {
   }
 
   function signUp() {
-    if (fname === "" || lname === "" || email === "" || password === "") {
+    if (fname === "" || lname === "" || email === "" || password === "" || confirmPassword === "") {
       MySwal.fire({
         title: "Fields Cannot Be Empty",
+        icon: "error",
+      });
+    } else if (password !== confirmPassword) {
+      MySwal.fire({
+        title: "Password in fields do not match",
         icon: "error",
       });
     } else {
@@ -106,6 +112,10 @@ function AccountForm() {
 
   const changePassword = (e) => {
     setPassword(e.target.value);
+  }
+
+  const changeConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value);
   }
 
   useEffect(() => {
@@ -154,6 +164,8 @@ function AccountForm() {
               <input type="email" onChange={changeEmail}></input><br></br><br></br>
               <label>Password</label><span className="asterik">*</span><br></br>
               <input type="password" onChange={changePassword}></input><br></br><br></br>
+              <label>Confirm Password</label><span className="asterik">*</span><br></br>
+              <input type="password" onChange={changeConfirmPassword}></input><br></br><br></br>
               <div className="center-container">
                 <button className="shared-btn" onClick={() => {signUp()}}>Create Account</button>
               </div>
