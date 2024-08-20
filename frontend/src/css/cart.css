@@ -56,3 +56,8 @@ th.cart-title, td.cart-title {
   border-left: 3px solid black;
   height: 60px;
 }
+
+img.bin-cart-image {
+	width: 60px;
+	height: 60px;
+}

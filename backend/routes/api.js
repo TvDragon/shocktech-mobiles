@@ -4,6 +4,7 @@ const router = express.Router();
 const phonesController = require("../controllers/phones-controller");
 const usersController = require("../controllers/users-controller");
 const cartsController = require("../controllers/carts-controller");
+const savesController = require("../controllers/saves-controller");
 const ordersController = require("../controllers/orders-controllers");
 
 router.get("/best-sellers", phonesController.getBestSellers);
@@ -31,6 +32,12 @@ router.post('/showReview', phonesController.showReview);
 router.post('/addToCart', cartsController.addToCart);
 
 router.post('/removeFromCart', cartsController.removeFromCart);
+
+router.post('/addToSaveForLater', savesController.saveForLater);
+
+router.post('/removeFromSaveForLater', savesController.removeFromSaveForLater);
+
+router.get('/saveForLater', savesController.getSaveForLater);
 
 router.post('/saveProfile', usersController.saveProfile);
 

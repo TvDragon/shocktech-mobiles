@@ -17,6 +17,8 @@ function Cart() {
   const {user} = useContext(AuthContext);
   const [cart, setCart] = useState([]);
   const [phones, setPhones] = useState([]);
+  const [save, setSave] = useState([]);
+  const [savedPhones, setSavedPhones] = useState([]);
   const [total, setTotal] = useState(0);
 
   function updateCart() {
@@ -29,7 +31,7 @@ function Cart() {
         .then(async (res) => {
           setCart(res.data.cart.items);
           const shoppingCart = res.data.cart.items;
-          var retrievedPhones = [];
+          let retrievedPhones = [];
           var currTotal = 0;
           for (let i = 0; i < shoppingCart.length; i++) {
             const phoneUid = shoppingCart[i].phoneUid;
@@ -51,11 +53,41 @@ function Cart() {
     }
   }
 
+  function updateSave() {
+    if (user) {
+      axios.get('/api/saveForLater', {
+        params: {
+          userId: user._id
+        }
+      })
+      .then(async (res) => {
+        setSave(res.data.save.items);
+        const saves = res.data.save.items;
+        let retrievedPhones = [];
+        for (let i = 0; i < saves.length; i++) {
+          const phoneUid = saves[i].phoneUid;
+          await axios.get('/api/product', {
+            params: {
+              uid: phoneUid
+            }
+          })
+          .then((res) => {
+            retrievedPhones.push(res.data);
+          })
+          .catch((err) => console.log(err));
+        }
+        setSavedPhones(retrievedPhones);
+      })
+      .catch((err) => console.log(err));
+    }
+  }
+
   useEffect(() => {
     updateCart();
-  }, [cart]);
+    updateSave();
+  }, [cart, save]);
 
-  function removeFromCart(phoneUid) {
+  function removeFromCart(phoneUid, showPopUp) {
     axios.post('/api/removeFromCart', {userId: user._id, phoneUid: phoneUid})
       .then((res) => {
         if (res.data.error) {
@@ -63,7 +95,25 @@ function Cart() {
             title: res.data.error,
             icon: "error"
           });
-        } else {
+        } else if (showPopUp) {
+          MySwal.fire({
+            title: res.data.success,
+            icon: "success"
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function removeFromSaveForLater(phoneUid, showPopUp) {
+    axios.post('/api/removeFromSaveForLater', {userId: user._id, phoneUid: phoneUid})
+      .then((res) => {
+        if (res.data.error) {
+          MySwal.fire({
+            title: res.data.error,
+            icon: "error"
+          });
+        } else if (showPopUp) {
           MySwal.fire({
             title: res.data.success,
             icon: "success"
@@ -113,7 +163,7 @@ function Cart() {
         })
         .catch((err) => console.log(err));
       } else {
-        removeFromCart(cart[index].phoneUid);
+        removeFromCart(cart[index].phoneUid, true);
       }
     }  else {
       MySwal.fire({
@@ -191,6 +241,39 @@ function Cart() {
     }
   }
 
+  function saveForLater(index) {
+    const cartItem = cart[index];
+    if (user) {
+      axios
+        .post("/api/addToSaveForLater", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
+        .then((res) => {
+          if (res.data.success) {
+            removeFromCart(cartItem.phoneUid, false);
+            MySwal.fire({
+              title: "Saved For Later",
+              icon: "success"
+            });
+          } else if (res.data.error) {
+            MySwal.fire({
+              title: res.data.error,
+              icon: "error"
+            });
+          } else {
+            MySwal.fire({
+              title: "Cannot save item for later",
+              icon: "error"
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
+  }
+
   return (
     <div className="content">
       <HeaderBar />
@@ -204,7 +287,6 @@ function Cart() {
                 <th className="cart-title cart"></th>
                 <th className="cart ps-fs-20">Price</th>
                 <th className="cart ps-fs-20">Subtotal</th>
-                <th className="cart"></th>
               </tr>
             </thead>
             <tbody>
@@ -225,11 +307,13 @@ function Cart() {
                             <button className="add-quantity text-color add-quantity-cart" onClick={() => addQty(i)}>+</button>
                           </div>
                           <div className="vertical-line-cart"></div>
+                          <button className="text-btn ps-fs-24" onClick={() => saveForLater(i)}><u>Save For Later</u></button>
+                          <div className="vertical-line-cart"></div>
+                          <img className="bin-cart-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid, true)}}></img>
                         </div>
                       </td>
                       <td className="cart ps-fs-20">${phone.price}</td>
-                      <td className="cart ps-fs-20">${phone.price * item.quantity}</td>
-                      <td className="cart"><img className="icon-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid)}}></img></td>
+                      <td className="cart ps-fs-20">${(phone.price * item.quantity).toFixed(2)}</td>
                     </tr>
                   );
                 }
@@ -238,10 +322,8 @@ function Cart() {
               <tr>
                 <td></td>
                 <td></td>
-                <td></td>
                 <td className="center-text ps-fs-20">Total:</td>
                 <td className="center-text ps-fs-20">${total}</td>
-                <td></td>
               </tr><br></br>
             </tbody>
             <tfoot>
@@ -249,9 +331,7 @@ function Cart() {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 <td className="center-text"><button className="checkout-btn" onClick={() => checkOut()}>Checkout</button></td>
-                <td></td>
               </tr>
             </tfoot>
           </table>
