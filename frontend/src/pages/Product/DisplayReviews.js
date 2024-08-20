@@ -5,10 +5,10 @@ import "../../css/product-state.css";
 import StarRating from "./StarRatings";
 
 function DisplayReviews({uid, reviews, isAdmin}) {
-  const [displayViewsCount, setDisplayViewsCount] = useState(5);
+  const [displayViewsCount, setDisplayViewsCount] = useState(3);
 
   function showMore() {
-    setDisplayViewsCount(displayViewsCount + 5);
+    setDisplayViewsCount(displayViewsCount + 3);
   }
 
   function hideReview(comment) {
