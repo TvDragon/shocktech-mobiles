@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import "../../css/global.css";
 import "../../css/cart.css";
+import "../../css/product-state.css";
 import HeaderBar from "../../components/HeaderBar";
 import binIcon from "../../assets/bin.png";
 
@@ -91,6 +92,105 @@ function Cart() {
       .catch((err) => console.log(err));
   }
 
+  function minusQty(index) {
+    if (user) {
+      if (cart[index].quantity - 1 > 0) {
+        axios
+          .post("/api/addToCart", {userId: user._id, uid: cart[index].phoneUid, quantity: -1})
+          .then((res) => {
+            if (res.data.success) {
+            } else if (res.data.error) {
+              MySwal.fire({
+                title: res.data.error,
+                icon: "error"
+              });
+            } else {
+              MySwal.fire({
+                title: "Cannot reduce item from cart",
+              icon: "error"
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+      } else {
+        removeFromCart(cart[index].phoneUid);
+      }
+    }  else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
+  }
+
+  function addQty(index) {
+    if (user) {
+      if (cart[index].quantity + 1 <= phones[index].stock) {
+        axios
+          .post("/api/addToCart", {userId: user._id, uid: cart[index].phoneUid, quantity: 1})
+          .then((res) => {
+            if (res.data.success) {
+            } else if (res.data.error) {
+              MySwal.fire({
+                title: res.data.error,
+                icon: "error"
+              });
+            } else {
+              MySwal.fire({
+                title: "Cannot add more quantity for item in cart",
+              icon: "error"
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+      } else {
+        MySwal.fire({
+          title: "Cannot purchase more than available stock",
+          icon: "info"
+        });
+      }
+    } else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
+  }
+
+  const changeQuantity = (e, index) => {
+    if (user) {
+      if (e.target.value <= phones[index].stock && e.target.value > 0) {
+        axios
+          .post("/api/addToCart", {userId: user._id, uid: cart[index].phoneUid, quantity: (e.target.value - cart[index].quantity)})
+          .then((res) => {
+            if (res.data.success) {
+            } else if (res.data.error) {
+              MySwal.fire({
+                title: res.data.error,
+                icon: "error"
+              });
+            } else {
+              MySwal.fire({
+                title: "Cannot adjust quantity for item in cart",
+              icon: "error"
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+      } else if (e.target.value > phones[index].stock) {
+        MySwal.fire({
+          title: "Cannot purchase more than available stock",
+          icon: "info"
+        });
+      }
+    } else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
+  }
+
   return (
     <div className="content">
       <HeaderBar />
@@ -103,7 +203,6 @@ function Cart() {
                 <th className="cart-img cart"></th>
                 <th className="cart-title cart"></th>
                 <th className="cart ps-fs-20">Price</th>
-                <th className="cart ps-fs-20">Quantity</th>
                 <th className="cart ps-fs-20">Subtotal</th>
                 <th className="cart"></th>
               </tr>
@@ -117,9 +216,18 @@ function Cart() {
                   rows.push(
                     <tr key={item.phoneUid}>
                       <td className="cart-img cart"><img className='phone-img' src={`${phone.image}`} alt={phone.image}/></td>
-                      <td className="cart-title cart ps-fs-24">{phone.title}</td>
+                      <td className="cart-title cart ps-fs-24">
+                        {phone.title}
+                        <div className="cart-quantity-adjuster">
+                          <div className="quantity-add-to-cart">
+                            <button className="minus-quantity text-color" onClick={() => minusQty(i)}>−</button>
+                            <input className="qty-input text-color" value={item.quantity} onChange={(e) => changeQuantity(e, i)}></input>
+                            <button className="add-quantity text-color add-quantity-cart" onClick={() => addQty(i)}>+</button>
+                          </div>
+                          <div className="vertical-line-cart"></div>
+                        </div>
+                      </td>
                       <td className="cart ps-fs-20">${phone.price}</td>
-                      <td className="cart ps-fs-20">{item.quantity}</td>
                       <td className="cart ps-fs-20">${phone.price * item.quantity}</td>
                       <td className="cart"><img className="icon-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid)}}></img></td>
                     </tr>
@@ -142,7 +250,7 @@ function Cart() {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td className="center-text"><button className="checkout-btn" onClick={checkOut}>Checkout</button></td>
+                <td className="center-text"><button className="checkout-btn" onClick={() => checkOut()}>Checkout</button></td>
                 <td></td>
               </tr>
             </tfoot>

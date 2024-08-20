@@ -38,3 +38,21 @@ th.cart-title, td.cart-title {
 	padding: 3%;
 	border-radius: 30px;
 }
+
+.cart-quantity-adjuster {
+  display: flex;
+}
+
+.cart-quantity-adjuster > * {
+  margin-right: 2.5%;
+}
+
+.add-quantity-cart {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.vertical-line-cart {
+  border-left: 3px solid black;
+  height: 60px;
+}
