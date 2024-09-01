@@ -4,12 +4,14 @@ import "../../css/cart.css";
 import "../../css/product-state.css";
 import HeaderBar from "../../components/HeaderBar";
 import binIcon from "../../assets/bin.png";
+import shoppingCartIcon from "../../assets/shopping-cart.png";
 
 import AuthContext from "../../context/AuthContext";
 
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
+import { Link } from "react-router-dom"
 
 const MySwal = withReactContent(Swal);
 
@@ -82,10 +84,14 @@ function Cart() {
     }
   }
 
+  // useEffect being continously called even though that is not what I want
   useEffect(() => {
     updateCart();
+  }, [cart]);
+  
+  useEffect(() => {
     updateSave();
-  }, [cart, save]);
+  }, [save]);
 
   function removeFromCart(phoneUid, showPopUp) {
     axios.post('/api/removeFromCart', {userId: user._id, phoneUid: phoneUid})
@@ -275,29 +281,30 @@ function Cart() {
   }
 
   function moveToCart(index) {
-    const cartItem = cart[index];
+    const cartItem = save[index];
     if (user) {
-      axios
-        .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
-        .then((res) => {
-          if (res.data.success) {
-            removeFromSaveForLater(cartItem.phoneUid, false);
-            MySwal.fire({
-              title: "Added To Cart",
-              icon: "success"
-            });
-          } else if (res.data.error) {
-            MySwal.fire({
-              title: res.data.error,
-              icon: "error"
-            });
-          } else {
-            MySwal.fire({
-              title: "Cannot add item to cart",
-            icon: "error"
-          });
-        }
-      })
+      console.log(cartItem);
+      // axios
+      //   .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
+      //   .then((res) => {
+      //     if (res.data.success) {
+      //       removeFromSaveForLater(cartItem.phoneUid, false);
+      //       MySwal.fire({
+      //         title: "Added To Cart",
+      //         icon: "success"
+      //       });
+      //     } else if (res.data.error) {
+      //       MySwal.fire({
+      //         title: res.data.error,
+      //         icon: "error"
+      //       });
+      //     } else {
+      //       MySwal.fire({
+      //         title: "Cannot add item to cart",
+      //       icon: "error"
+      //     });
+      //   }
+      // })
     } else {
       MySwal.fire({
         title: "Login to add to cart",
@@ -310,10 +317,9 @@ function Cart() {
     <div className="content">
       <HeaderBar />
       <div className="cart-contents">
-        { /* Need to put shopping cart and save for later into separate div blocks and have background color for each div block instead*/}
         <p className="p-heading">SHOPPING CART</p>
         {cart && cart.length > 0 && phones.length > 0 ? (
-          <table id="cart">
+          <table className="cart">
             <thead>
               <tr>
                 <th className="cart-img cart"></th>
@@ -374,6 +380,36 @@ function Cart() {
       </div>
       <div className="cart-contents">
         <p className="p-heading">SAVE FOR LATER</p>
+        {savedPhones && savedPhones.length > 0 && phones.length > 0 ? (
+          <div className="saved-phones">
+            {(() => {
+              const displayedSavedPhones = [];
+              for (let i = 0; i < savedPhones.length; i++) {
+                const phone = savedPhones[i];
+                displayedSavedPhones.push(
+                  <div key={phone.uid}>
+                    <div className='saved-phone-listing'>
+                      <Link to={"/product?uid=" + phone.uid} state={{phoneData: phone}} className='phone-link-style'>
+                      <img className='phone-img' src={`${phone.image}`} alt={phone.image}/>
+                      <p className='saved-title'>{phone.title.length > 30 ? phone.title.slice(0, 30) : phone.title}...</p><br></br>
+                      <Link to={"/product?uid=" + phone.uid} state={{phoneData: phone}} className='phone-link-style'>
+                          <p className='saved-price'>${phone.price}</p>
+                        </Link>
+                      </Link>
+                      <div className="saved-price-cart">
+                        <img className="bin-cart-image-small" src={binIcon} alt={binIcon} onClick={() => {removeFromSaveForLater(phone.uid, true)}}></img>
+                        <img className='quick-cart-img' src={shoppingCartIcon} alt={shoppingCartIcon} onClick={() => {moveToCart(i)}}/>
+                      </div>
+                    </div>
+                  </div>
+                  );
+                }
+              return displayedSavedPhones;
+            })()}
+          </div>
+        ): (
+          <p>No items in saved for later</p>
+        )}
       </div>
     </div>
   )

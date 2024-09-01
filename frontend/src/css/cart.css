@@ -1,6 +1,6 @@
 .cart-contents {
   width: 95%;
-  margin: auto;
+  margin: 1% auto;
   padding: 1%;
   border-radius: 10px;
   background-color: #d9d9d8;
@@ -12,7 +12,7 @@
   color: #2b2c30;
 }
 
-table#cart {
+table.cart {
   width: 100%;
   border-collapse: collapse; /* This property ensures that the borders are collapsed into a single border */
 }
@@ -60,4 +60,47 @@ th.cart-title, td.cart-title {
 img.bin-cart-image {
 	width: 60px;
 	height: 60px;
+}
+
+.saved-phones {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: auto;
+}
+
+.saved-phone-listing {
+	background-color: #eeeeee;
+	margin: 2% 5%;
+	border-radius: 20px;
+	padding: 1%;
+}
+
+.saved-phone-listing > * {
+	margin: 5% auto;
+}
+
+.saved-title, .saved-price {
+	text-align: center;
+	font-family: 'Public Sans';
+	overflow-wrap: break-word;
+	font-size: 15px;
+	color: #2b2c30;
+}
+
+.saved-price-cart {
+	display: flex;
+	justify-content: center;
+}
+
+.saved-price-cart > * {
+	margin: auto;
+}
+
+.bin-cart-image-small {
+	width: 25px;
+	height: 25px;
+	background-color: #f6c5af;
+	padding: 1%;
+	border-radius: 5px;
 }

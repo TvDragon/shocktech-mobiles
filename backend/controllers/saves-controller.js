@@ -33,7 +33,7 @@ module.exports.removeFromSaveForLater = async function(req, res) {
   const phoneUid = req.body.phoneUid;
   if (userId && phoneUid) {
     try {
-      await Cart.removeFromSaveForLater(userId, phoneUid);
+      await Save.removeFromSaveForLater(userId, phoneUid);
       return res.json({success: "Deleted item from save for later"});
     } catch (err) {
       return res.json({error: err});
