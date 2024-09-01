@@ -274,10 +274,43 @@ function Cart() {
     }
   }
 
+  function moveToCart(index) {
+    const cartItem = cart[index];
+    if (user) {
+      axios
+        .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
+        .then((res) => {
+          if (res.data.success) {
+            removeFromSaveForLater(cartItem.phoneUid, false);
+            MySwal.fire({
+              title: "Added To Cart",
+              icon: "success"
+            });
+          } else if (res.data.error) {
+            MySwal.fire({
+              title: res.data.error,
+              icon: "error"
+            });
+          } else {
+            MySwal.fire({
+              title: "Cannot add item to cart",
+            icon: "error"
+          });
+        }
+      })
+    } else {
+      MySwal.fire({
+        title: "Login to add to cart",
+        icon: "info"
+      });
+    }
+  }
+
   return (
     <div className="content">
       <HeaderBar />
-      <div className="cart-page">
+      <div className="cart-contents">
+        { /* Need to put shopping cart and save for later into separate div blocks and have background color for each div block instead*/}
         <p className="p-heading">SHOPPING CART</p>
         {cart && cart.length > 0 && phones.length > 0 ? (
           <table id="cart">
@@ -318,13 +351,13 @@ function Cart() {
                   );
                 }
                 return rows;
-              })()}<br></br>
+              })()}
               <tr>
                 <td></td>
                 <td></td>
                 <td className="center-text ps-fs-20">Total:</td>
                 <td className="center-text ps-fs-20">${total}</td>
-              </tr><br></br>
+              </tr>
             </tbody>
             <tfoot>
               <tr>
@@ -338,6 +371,9 @@ function Cart() {
         ): (
           <p>No items in cart</p>
         )}
+      </div>
+      <div className="cart-contents">
+        <p className="p-heading">SAVE FOR LATER</p>
       </div>
     </div>
   )
