@@ -283,28 +283,29 @@ function Cart() {
   function moveToCart(index) {
     const cartItem = save[index];
     if (user) {
-      console.log(cartItem);
-      // axios
-      //   .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
-      //   .then((res) => {
-      //     if (res.data.success) {
-      //       removeFromSaveForLater(cartItem.phoneUid, false);
-      //       MySwal.fire({
-      //         title: "Added To Cart",
-      //         icon: "success"
-      //       });
-      //     } else if (res.data.error) {
-      //       MySwal.fire({
-      //         title: res.data.error,
-      //         icon: "error"
-      //       });
-      //     } else {
-      //       MySwal.fire({
-      //         title: "Cannot add item to cart",
-      //       icon: "error"
-      //     });
-      //   }
-      // })
+      // console.log(cartItem);
+      // Fix move to cart from saved later. Keeps saying phone is not defined
+      axios
+        .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
+        .then((res) => {
+          if (res.data.success) {
+            removeFromSaveForLater(cartItem.phoneUid, false);
+            MySwal.fire({
+              title: "Added To Cart",
+              icon: "success"
+            });
+          } else if (res.data.error) {
+            MySwal.fire({
+              title: res.data.error,
+              icon: "error"
+            });
+          } else {
+            MySwal.fire({
+              title: "Cannot add item to cart",
+            icon: "error"
+          });
+        }
+      })
     } else {
       MySwal.fire({
         title: "Login to add to cart",
