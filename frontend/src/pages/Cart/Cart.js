@@ -22,6 +22,8 @@ function Cart() {
   const [save, setSave] = useState([]);
   const [savedPhones, setSavedPhones] = useState([]);
   const [total, setTotal] = useState(0);
+  const [updatedCart, setUpdatedCart] = useState(false);
+  const [updatedSave, setUpdatedSave] = useState(false);
 
   function updateCart() {
     if (user) {
@@ -49,6 +51,7 @@ function Cart() {
             .catch((err) => console.log(err));
           }
           setPhones(retrievedPhones);
+          console.log(retrievedPhones);
           setTotal(currTotal.toFixed(2));
         })
         .catch((err) => console.log(err));
@@ -87,11 +90,11 @@ function Cart() {
   // useEffect being continously called even though that is not what I want
   useEffect(() => {
     updateCart();
-  }, [cart]);
+  }, [updatedCart]);
   
   useEffect(() => {
     updateSave();
-  }, [save]);
+  }, [updatedSave]);
 
   function removeFromCart(phoneUid, showPopUp) {
     axios.post('/api/removeFromCart', {userId: user._id, phoneUid: phoneUid})
@@ -106,6 +109,7 @@ function Cart() {
             title: res.data.success,
             icon: "success"
           });
+          setUpdatedCart(!updatedCart);
         }
       })
       .catch((err) => console.log(err));
@@ -124,6 +128,7 @@ function Cart() {
             title: res.data.success,
             icon: "success"
           });
+          setUpdatedSave(!updatedSave);
         }
       })
       .catch((err) => console.log(err));
@@ -143,6 +148,7 @@ function Cart() {
             icon: "success"
           });
           updateCart();
+          setUpdatedCart(!updatedCart);
         }
       })
       .catch((err) => console.log(err));
@@ -155,6 +161,7 @@ function Cart() {
           .post("/api/addToCart", {userId: user._id, uid: cart[index].phoneUid, quantity: -1})
           .then((res) => {
             if (res.data.success) {
+              setUpdatedCart(!updatedCart);
             } else if (res.data.error) {
               MySwal.fire({
                 title: res.data.error,
@@ -169,7 +176,6 @@ function Cart() {
         })
         .catch((err) => console.log(err));
       } else {
-        removeFromCart(cart[index].phoneUid, true);
       }
     }  else {
       MySwal.fire({
@@ -186,6 +192,7 @@ function Cart() {
           .post("/api/addToCart", {userId: user._id, uid: cart[index].phoneUid, quantity: 1})
           .then((res) => {
             if (res.data.success) {
+              setUpdatedCart(!updatedCart);
             } else if (res.data.error) {
               MySwal.fire({
                 title: res.data.error,
@@ -220,6 +227,7 @@ function Cart() {
           .post("/api/addToCart", {userId: user._id, uid: cart[index].phoneUid, quantity: (e.target.value - cart[index].quantity)})
           .then((res) => {
             if (res.data.success) {
+              setUpdatedCart(!updatedCart);
             } else if (res.data.error) {
               MySwal.fire({
                 title: res.data.error,
@@ -259,6 +267,8 @@ function Cart() {
               title: "Saved For Later",
               icon: "success"
             });
+            setUpdatedCart(!updatedCart);
+            setUpdatedSave(!updatedSave);
           } else if (res.data.error) {
             MySwal.fire({
               title: res.data.error,
@@ -285,6 +295,8 @@ function Cart() {
     if (user) {
       // console.log(cartItem);
       // Fix move to cart from saved later. Keeps saying phone is not defined
+      // phone is not displayed when an item exists in cart.
+      // Will work if cart is empty
       axios
         .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
         .then((res) => {
@@ -294,6 +306,10 @@ function Cart() {
               title: "Added To Cart",
               icon: "success"
             });
+            console.log("Moved to cart");
+            console.log(phones);
+            setUpdatedCart(!updatedCart);
+            setUpdatedSave(!updatedSave);
           } else if (res.data.error) {
             MySwal.fire({
               title: res.data.error,
@@ -381,7 +397,7 @@ function Cart() {
       </div>
       <div className="cart-contents">
         <p className="p-heading">SAVE FOR LATER</p>
-        {savedPhones && savedPhones.length > 0 && phones.length > 0 ? (
+        {savedPhones && savedPhones.length > 0 ? (
           <div className="saved-phones">
             {(() => {
               const displayedSavedPhones = [];
