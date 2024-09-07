@@ -51,7 +51,6 @@ function Cart() {
             .catch((err) => console.log(err));
           }
           setPhones(retrievedPhones);
-          console.log(retrievedPhones);
           setTotal(currTotal.toFixed(2));
         })
         .catch((err) => console.log(err));
@@ -293,10 +292,6 @@ function Cart() {
   function moveToCart(index) {
     const cartItem = save[index];
     if (user) {
-      // console.log(cartItem);
-      // Fix move to cart from saved later. Keeps saying phone is not defined
-      // phone is not displayed when an item exists in cart.
-      // Will work if cart is empty
       axios
         .post("/api/addToCart", {userId: user._id, uid: cartItem.phoneUid, quantity: cartItem.quantity})
         .then((res) => {
@@ -306,8 +301,6 @@ function Cart() {
               title: "Added To Cart",
               icon: "success"
             });
-            console.log("Moved to cart");
-            console.log(phones);
             setUpdatedCart(!updatedCart);
             setUpdatedSave(!updatedSave);
           } else if (res.data.error) {
@@ -351,27 +344,29 @@ function Cart() {
                 for (let i = 0; i < cart.length; i++) {
                   const item = cart[i];
                   const phone = phones[i];
-                  rows.push(
-                    <tr key={item.phoneUid}>
-                      <td className="cart-img cart"><img className='phone-img' src={`${phone.image}`} alt={phone.image}/></td>
-                      <td className="cart-title cart ps-fs-24">
-                        {phone.title}
-                        <div className="cart-quantity-adjuster">
-                          <div className="quantity-add-to-cart">
-                            <button className="minus-quantity text-color" onClick={() => minusQty(i)}>−</button>
-                            <input className="qty-input text-color" value={item.quantity} onChange={(e) => changeQuantity(e, i)}></input>
-                            <button className="add-quantity text-color add-quantity-cart" onClick={() => addQty(i)}>+</button>
+                  if (phone !== undefined) {
+                    rows.push(
+                      <tr key={item.phoneUid}>
+                        <td className="cart-img cart"><img className='phone-img' src={`${phone.image}`} alt={phone.image}/></td>
+                        <td className="cart-title cart ps-fs-24">
+                          {phone.title}
+                          <div className="cart-quantity-adjuster">
+                            <div className="quantity-add-to-cart">
+                              <button className="minus-quantity text-color" onClick={() => minusQty(i)}>−</button>
+                              <input className="qty-input text-color" value={item.quantity} onChange={(e) => changeQuantity(e, i)}></input>
+                              <button className="add-quantity text-color add-quantity-cart" onClick={() => addQty(i)}>+</button>
+                            </div>
+                            <div className="vertical-line-cart"></div>
+                            <button className="text-btn ps-fs-24" onClick={() => saveForLater(i)}><u>Save For Later</u></button>
+                            <div className="vertical-line-cart"></div>
+                            <img className="bin-cart-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid, true)}}></img>
                           </div>
-                          <div className="vertical-line-cart"></div>
-                          <button className="text-btn ps-fs-24" onClick={() => saveForLater(i)}><u>Save For Later</u></button>
-                          <div className="vertical-line-cart"></div>
-                          <img className="bin-cart-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid, true)}}></img>
-                        </div>
-                      </td>
-                      <td className="cart ps-fs-20">${phone.price}</td>
-                      <td className="cart ps-fs-20">${(phone.price * item.quantity).toFixed(2)}</td>
-                    </tr>
-                  );
+                        </td>
+                        <td className="cart ps-fs-20">${phone.price}</td>
+                        <td className="cart ps-fs-20">${(phone.price * item.quantity).toFixed(2)}</td>
+                      </tr>
+                    );
+                  }
                 }
                 return rows;
               })()}
