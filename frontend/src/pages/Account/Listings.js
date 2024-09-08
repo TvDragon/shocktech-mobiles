@@ -13,7 +13,6 @@ import AuthContext from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
-import SearchState from "../Search/SearchState";
 
 const MySwal = withReactContent(Swal);
 

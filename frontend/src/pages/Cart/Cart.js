@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import Popup from "reactjs-popup";
 import "../../css/global.css";
 import "../../css/cart.css";
 import "../../css/product-state.css";
@@ -359,7 +360,24 @@ function Cart() {
                             <div className="vertical-line-cart"></div>
                             <button className="text-btn ps-fs-24" onClick={() => saveForLater(i)}><u>Save For Later</u></button>
                             <div className="vertical-line-cart"></div>
-                            <img className="bin-cart-image" src={binIcon} alt={binIcon} onClick={() => {removeFromCart(item.phoneUid, true)}}></img>
+                            <Popup trigger=
+                              {<img className="bin-cart-image" src={binIcon} alt={binIcon}></img>} modal nested >
+                              {
+                                close => (
+                                  <form method='post' action=''>
+                                    <div className="review-form">
+                                      <button className="close" onClick={close}>&times;</button>
+                                      <p className="title-review center-text">Do you wish to remove this item from cart?</p>
+                                      <p className="center-text">Click yes to confirm otherwise no to cancel.</p>
+                                      <div className="center-buttons">
+                                        <button className="shared-btn" onClick={() => {removeFromCart(item.phoneUid, true);close();}}>Yes</button>
+                                        <button className="shared-btn" onClick={() => {close();}}>No</button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                )
+                              }
+                            </Popup>
                           </div>
                         </td>
                         <td className="cart ps-fs-20">${phone.price}</td>
@@ -382,7 +400,24 @@ function Cart() {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td className="center-text"><button className="checkout-btn" onClick={() => checkOut()}>Checkout</button></td>
+                <Popup trigger=
+                  {<td className="center-text"><button className="checkout-btn">Checkout</button></td>} modal nested >
+                  {
+                    close => (
+                      <form method='post' action=''>
+                        <div className="review-form">
+                          <button className="close" onClick={close}>&times;</button>
+                          <p className="title-review center-text">Do you confirm to purchasing these items?</p>
+                          <p className="center-text">Click yes to confirm otherwise no to cancel.</p>
+                          <div className="center-buttons">
+                            <button className="shared-btn" onClick={() => {checkOut();close();}}>Yes</button>
+                            <button className="shared-btn" onClick={() => {close();}}>No</button>
+                          </div>
+                        </div>
+                      </form>
+                    )
+                  }
+                </Popup>
               </tr>
             </tfoot>
           </table>
@@ -409,7 +444,24 @@ function Cart() {
                         </Link>
                       </Link>
                       <div className="saved-price-cart">
-                        <img className="bin-cart-image-small" src={binIcon} alt={binIcon} onClick={() => {removeFromSaveForLater(phone.uid, true)}}></img>
+                        <Popup trigger=
+                          {<img className="bin-cart-image-small" src={binIcon} alt={binIcon}></img>} modal nested >
+                          {
+                            close => (
+                              <form method='post' action=''>
+                                <div className="review-form">
+                                  <button className="close" onClick={close}>&times;</button>
+                                  <p className="title-review center-text">Do you wish to remove this item from save for later?</p>
+                                  <p className="center-text">Click yes to confirm otherwise no to cancel.</p>
+                                  <div className="center-buttons">
+                                    <button className="shared-btn" onClick={() => {removeFromSaveForLater(phone.uid, true);close();}}>Yes</button>
+                                    <button className="shared-btn" onClick={() => {close();}}>No</button>
+                                  </div>
+                                </div>
+                              </form>
+                            )
+                          }
+                        </Popup>
                         <img className='quick-cart-img' src={shoppingCartIcon} alt={shoppingCartIcon} onClick={() => {moveToCart(i)}}/>
                       </div>
                     </div>
