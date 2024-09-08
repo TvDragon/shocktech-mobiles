@@ -211,7 +211,7 @@ PhoneSchema.statics.searchTitle = async function(searchTitle, brands, conditions
     case "Price: High - Low":
       sortByPipeline = { price: -1 };
       break;
-    case "Polularity":
+    case "Popularity":
       sortByPipeline = { avgRatings: -1};
       break;
     case "Title: A - Z":
