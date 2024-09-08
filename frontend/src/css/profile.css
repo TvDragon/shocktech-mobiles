@@ -93,6 +93,13 @@ td.total {
   justify-content: space-between;
 }
 
+#productSearchBar {
+	display: flex;
+	flex-grow: 1;
+	margin: auto 10%;
+  font-size: 20px;
+}
+
 .add-listing-btn {
   background-color: #dcc3ac;
   font-family: 'PublicSans';
@@ -117,6 +124,10 @@ tr.listings-row > * {
   text-align: center;
   padding: 8px; /* Add padding for better visual appearance */
   width: 14%;
+}
+
+.listing-phone-title {
+  color: #2b2c30;
 }
 
 .cell-icons {

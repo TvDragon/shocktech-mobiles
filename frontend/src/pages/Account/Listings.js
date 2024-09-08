@@ -13,6 +13,7 @@ import AuthContext from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
+import SearchState from "../Search/SearchState";
 
 const MySwal = withReactContent(Swal);
 
@@ -20,6 +21,7 @@ function Listings() {
   const navigate = useNavigate();
   const {user} = useContext(AuthContext);
   const [allPhones, setAllPhones] = useState([]);
+  const [searchProductName, setSearchProductName] = useState("");
 
   function getListings() {
     if (user) {
@@ -40,6 +42,7 @@ function Listings() {
         .catch((err) => console.log(err));
     }
   }
+  
   useEffect(() => {
     getListings();
   }, []);
@@ -63,6 +66,28 @@ function Listings() {
       .catch((err) => console.log(err));
   }
 
+  const searchProductNameChange = (e) => {
+    if (e.target.value !== "") {
+      axios
+        .get("/api/search", {
+          params: {
+            searchTitle: e.target.value,
+          }
+        })
+        .then((res) => {
+          if (res.data.phones !== undefined) {
+            setAllPhones(res.data.phones);
+          } else {
+            setAllPhones([]);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      getListings();
+    }
+    setSearchProductName(e.target.value);
+  }
+
   return (
     <div className="content">
       <HeaderBar />
@@ -72,6 +97,7 @@ function Listings() {
             <div id="">
               <div id="listing-bar">
                 <p id="p-heading"><button className="review-back-btn" onClick={() => {navigate(-1)}}>&laquo;</button> LISTINGS</p>
+                <input id="productSearchBar" name="search" type="text" placeholder="Search..." onChange={searchProductNameChange}></input>
                 <Link to="/addListing"><button className="add-listing-btn">Add Listing</button></Link>
               </div>
               <table id="table-listings">
@@ -90,7 +116,7 @@ function Listings() {
                   {
                     allPhones.map((phone) => {
                       return <tr className="listings-row">
-                        <td>{phone.title}</td>
+                        <td><Link className="listing-phone-title" to={"/product?uid=" + phone.uid}>{phone.title}</Link></td>
                         <td>{phone.uid}</td>
                         <td>${phone.price}</td>
                         <td>{phone.stock}</td>
