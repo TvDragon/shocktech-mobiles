@@ -15,13 +15,11 @@ function HomeState() {
         .get('/api/sold-out-soon')
         .then((res) => {
           setSoldOutSoon(res.data);
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
       axios.get('/api/best-sellers')
         .then((res) => {
           setBestSellers(res.data);
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     // }, 1000);	// Make a request to the server every second
