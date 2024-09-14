@@ -94,12 +94,9 @@ function Cart() {
   // useEffect being continously called even though that is not what I want
   useEffect(() => {
     updateCart();
-  }, [updatedCart]);
+    updateSave()
+  }, [updatedCart, updatedSave]);
   
-  useEffect(() => {
-    updateSave();
-  }, [updatedSave]);
-
   function removeFromCart(phoneUid, showPopUp) {
     axios.post('/api/removeFromCart', {userId: user._id, phoneUid: phoneUid})
       .then((res) => {
