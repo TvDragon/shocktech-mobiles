@@ -34,25 +34,27 @@ function Cart() {
           }
         })
         .then(async (res) => {
-          setCart(res.data.cart.items);
-          const shoppingCart = res.data.cart.items;
-          let retrievedPhones = [];
-          var currTotal = 0;
-          for (let i = 0; i < shoppingCart.length; i++) {
-            const phoneUid = shoppingCart[i].phoneUid;
-            await axios.get('/api/product', {
-              params: {
-                uid: phoneUid
-              }
-            })
-            .then((res) => {
-              retrievedPhones.push(res.data);
-              currTotal += (shoppingCart[i].quantity * res.data.price);
-            })
-            .catch((err) => console.log(err));
+          if (res.data.cart) {
+            setCart(res.data.cart.items);
+            const shoppingCart = res.data.cart.items;
+            let retrievedPhones = [];
+            var currTotal = 0;
+            for (let i = 0; i < shoppingCart.length; i++) {
+              const phoneUid = shoppingCart[i].phoneUid;
+              await axios.get('/api/product', {
+                params: {
+                  uid: phoneUid
+                }
+              })
+              .then((res) => {
+                retrievedPhones.push(res.data);
+                currTotal += (shoppingCart[i].quantity * res.data.price);
+              })
+              .catch((err) => console.log(err));
+            }
+            setPhones(retrievedPhones);
+            setTotal(currTotal.toFixed(2));
           }
-          setPhones(retrievedPhones);
-          setTotal(currTotal.toFixed(2));
         })
         .catch((err) => console.log(err));
     }
@@ -66,22 +68,24 @@ function Cart() {
         }
       })
       .then(async (res) => {
-        setSave(res.data.save.items);
-        const saves = res.data.save.items;
-        let retrievedPhones = [];
-        for (let i = 0; i < saves.length; i++) {
-          const phoneUid = saves[i].phoneUid;
-          await axios.get('/api/product', {
-            params: {
-              uid: phoneUid
-            }
-          })
-          .then((res) => {
-            retrievedPhones.push(res.data);
-          })
-          .catch((err) => console.log(err));
+        if (res.data.save) {
+          setSave(res.data.save.items);
+          const saves = res.data.save.items;
+          let retrievedPhones = [];
+          for (let i = 0; i < saves.length; i++) {
+            const phoneUid = saves[i].phoneUid;
+            await axios.get('/api/product', {
+              params: {
+                uid: phoneUid
+              }
+            })
+            .then((res) => {
+              retrievedPhones.push(res.data);
+            })
+            .catch((err) => console.log(err));
+          }
+          setSavedPhones(retrievedPhones);
         }
-        setSavedPhones(retrievedPhones);
       })
       .catch((err) => console.log(err));
     }
