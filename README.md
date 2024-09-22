@@ -12,7 +12,7 @@ ShockTech Mobiles is an eCommerce web application listing mobile phones for sale
 
 ### Showcasing Project
 
-https://github.com/user-attachments/assets/6206fe9d-406a-411e-953a-db8580984dfc
+[![Watch the video]()](https://youtu.be/erIMt7pJfPk)
 
 ### Features
 
